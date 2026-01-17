@@ -1,53 +1,82 @@
-# Daily CP Solutions (2026-01-17)
+# 📅 Daily CP Solutions — 2026-01-17
 
-
-## 🔹 Leetcode Test
-**Platform:** LeetCode
-
-The provided code `int main() { return 0; }` is the absolute minimal valid C++ program. It doesn't perform any operations, read any input, or produce any output beyond indicating successful execution to the operating system.
-
-Let's analyze it in the context of competitive programming:
+This document contains concise, interview-ready explanations for the problems solved today.
+Each solution includes the core idea, complexity analysis, and optimization insight.
 
 ---
 
-### 1. Problem Summary
+## 🔹 Gfg Expression Contrain Redundant Brackets Or Not
+**Platform:** GeeksforGeeks
 
-*   **No discernible problem is being solved.**
-*   In competitive programming, solutions are expected to address a specific task, typically involving processing input data and producing computed output. This code performs no such task. It merely defines the program's entry point (`main`) and immediately exits with a success code (`0`).
-*   The "problem" it solves is simply "to be a valid, minimal C++ program that does nothing."
+Problem Insight:
+The problem checks if an arithmetic expression contains any redundant parentheses. Redundant parentheses are those that do not change the order of evaluation (e.g., `((a+b))` or `(a)`).
 
-### 2. Current Approach
+Approach:
+The solution uses a stack. It pushes opening parentheses and operators onto the stack. When a closing parenthesis is encountered, it checks if the top of the stack is an opening parenthesis; if so, redundancy is found and it returns `True`. Otherwise, it pops elements from the stack until the matching opening parenthesis is found, ensuring at least one operator was enclosed.
 
-*   **The approach is to do nothing.**
-*   The program starts execution at the `main` function.
-*   The very first (and only) statement within `main` is `return 0;`. This causes the program to terminate immediately, indicating successful completion to the operating system.
-*   No variables are declared, no computations are performed, no input/output operations occur.
+Time Complexity:
+O(N) because each character in the input string `s` is processed once, and stack operations take O(1) time.
 
-### 3. Time Complexity
+Space Complexity:
+O(N) in the worst case, as the stack `st` can store up to N characters for deeply nested expressions (e.g., `((((...))))`).
 
-*   **O(1)** (Constant Time)
-*   The execution time is constant and extremely short. It involves the overhead of starting the program, entering the `main` function, and then immediately exiting. This time does not depend on any input size because there is no input.
+Optimization Notes:
+This approach is optimal. Any algorithm must examine each character of the expression at least once (O(N) time), and storing intermediate parenthesis states often requires O(N) space.
 
-### 4. Space Complexity
+### 💻 Implementation
+```py
+class Solution():
+    def checkRedundancy(self, s):
+        st,aux=[],"+-/*"
+        i,n=0,len(s)
+        while(i<n):
+            if(s[i]=='(' or s[i] in aux):
+                st.append(s[i])
+            elif(s[i]==')'):
+                if(st[-1]=='('):
+                    return True
+                while(st and st[-1]!='('):
+                    st.pop()
+                st.pop()
+            i+=1
+        return False
 
-*   **O(1)** (Constant Space)
-*   The memory usage is constant and minimal. No variables are declared, no data structures are used, and no dynamic memory is allocated. The memory used is limited to the bare minimum for the program executable itself, the call stack for the `main` function, and standard system overhead.
+## 🔹 Leetcode 3047 Find The Largest Area Of Square Inside Two Rectangles
+**Platform:** LeetCode
 
-### 5. Optimized Approach Suggestion
+Problem Insight:
+The problem asks to find the maximum area of a square that can be inscribed within the intersection of any two axis-aligned rectangles from a given set.
 
-*   **This specific code cannot be optimized further in terms of time or space complexity.** It already performs the absolute minimum operations and uses the absolute minimum memory (O(1) for both).
-*   **For a real competitive programming problem:** This code would need to be entirely replaced with an actual solution.
-    *   **First, understand the problem statement:** What input is expected? What output is required? What constraints are there (N, M, time limit, memory limit)?
-    *   **Then, design an algorithm:** Based on the problem, devise a step-by-step procedure to transform the input into the required output. This might involve:
-        *   Reading input (e.g., `std::cin >> variable;`)
-        *   Using appropriate data structures (arrays, vectors, maps, sets, trees, graphs, etc.)
-        *   Implementing logic (loops, conditionals, functions)
-        *   Performing computations
-        *   Printing output (e.g., `std::cout << result;`)
-    *   **Consider optimizations for the specific problem:** Once an algorithm is designed, analyze its time and space complexity and look for ways to improve it if it doesn't meet the problem's constraints.
+Approach:
+The solution iterates through all unique pairs of rectangles. For each pair, it calculates the dimensions of their intersection. The side length of the largest square that can fit within this intersection is the minimum of the intersection's width and height. The maximum square area found across all pairs is maintained and returned.
 
-**In summary, the provided code is a template for a C++ program, not a solution to any particular problem. To make it useful in competitive programming, it needs to be filled with actual logic to solve a given task.**
+Time Complexity:
+`O(N^2)`, because it involves nested loops iterating through all `N * (N-1) / 2` unique pairs of rectangles, with constant time operations inside the loops.
 
+Space Complexity:
+`O(1)`, as only a few constant extra variables are used regardless of the input size `N`.
+
+Optimization Notes:
+Yes, this approach is generally optimal. To guarantee finding the largest square among *any* pair, one must inspect all possible pairs of rectangles. There isn't a known faster general algorithm for this specific problem than iterating through all `O(N^2)` pairs.
+
+### 💻 Implementation
 ```cpp
-int main() { return 0; }
-
+class Solution {
+public:
+    long long largestSquareArea(vector<vector<int>>& bottomLeft, vector<vector<int>>& topRight) {
+        #define ll long long
+        ll res=0;
+        int n=bottomLeft.size();
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                int wdth=min(topRight[i][0],topRight[j][0])-
+                max(bottomLeft[i][0],bottomLeft[j][0]);
+                int hgth=min(topRight[i][1],topRight[j][1])-
+                max(bottomLeft[i][1],bottomLeft[j][1]);
+                int sd=min(wdth,hgth);
+                res=max(res,sd>0?1ll*sd*sd:0);
+            }
+        }
+        return res;
+    }
+};
