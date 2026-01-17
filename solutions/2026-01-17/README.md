@@ -42,7 +42,7 @@ class Solution():
                 st.pop()
             i+=1
         return False
-
+```
 ## 🔹 Leetcode 3047 Find The Largest Area Of Square Inside Two Rectangles
 **Platform:** LeetCode
 
@@ -84,3 +84,4 @@ public:
         return res;
     }
 };
+```
