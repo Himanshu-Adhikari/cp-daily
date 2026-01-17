@@ -1,9 +1,9 @@
 name: Daily CP Automation
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "30 15 * * *"   # 9:00 PM IST
-  workflow_dispatch:
 
 jobs:
   auto:
@@ -21,16 +21,18 @@ jobs:
       - name: Install Gemini SDK
         run: pip install google-generativeai
 
+      - name: Set TODAY variable
+        run: echo "TODAY=$(date +%Y-%m-%d)" >> $GITHUB_ENV
+
       - name: Generate AI Summary
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          TODAY: $(date +%Y-%m-%d)
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: python ai/summarize.py
 
       - name: Commit & Push
         run: |
           git config --global user.name "Himanshu-Adhikari"
-          git config --global user.email "adhikarihimanshu393.com"
+          git config --global user.email "adhikarihimanshu393@gmail.com"
           git add .
-          git commit -m "Daily CP | $(date +%Y-%m-%d)" || echo "No changes"
+          git commit -m "Daily CP | $TODAY" || echo "No changes"
           git push

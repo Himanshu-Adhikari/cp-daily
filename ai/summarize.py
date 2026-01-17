@@ -2,21 +2,22 @@ import os
 from pathlib import Path
 import google.generativeai as genai
 
-# TEMPORARY: manual testing only
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+# ✅ Gemini requires GOOGLE_API_KEY
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
+model = genai.GenerativeModel("gemini-1.5-flash")
 
-model = genai.GenerativeModel("gemini-2.5-flash")
+today = os.getenv("TODAY")
+base = Path(f"solutions/{today}")
 
-base = Path("solutions/2026-01-17")
 print("Looking in:", base)
 
 if not base.exists():
-    print("No solutions found.")
+    print("No solutions found for today.")
     exit(0)
 
 readme = base / "README.md"
-content = "# Daily CP Solutions (2026-01-17)\n\n"
+content = f"# Daily CP Solutions ({today})\n\n"
 
 for file in base.iterdir():
     if file.suffix not in [".cpp", ".py"]:
@@ -50,6 +51,6 @@ Code:
 ```{file.suffix[1:]}
 {code}
 """
-readme.write_text(content)
 
-print("README generated successfully at:", readme)
+readme.write_text(content)
+print("README generated:", readme)
