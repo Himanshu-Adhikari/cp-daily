@@ -23,7 +23,7 @@ jobs:
 
       - name: Generate AI Summary
         env:
-          GEMINI_API_KEY: "AIzaSyBi9oEBLqt0Hq-PACsHEzTuFaIlQ0H20oY"
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TODAY: $(date +%Y-%m-%d)
         run: python ai/summarize.py
 
