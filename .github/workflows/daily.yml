@@ -29,8 +29,8 @@ jobs:
 
       - name: Commit & Push
         run: |
-          git config --global user.name "cp-bot"
-          git config --global user.email "cp-bot@github.com"
+          git config --global user.name "Himanshu-Adhikari"
+          git config --global user.email "adhikarihimanshu393.com"
           git add .
           git commit -m "Daily CP | $(date +%Y-%m-%d)" || echo "No changes"
           git push
