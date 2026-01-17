@@ -9,19 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem checks if an arithmetic expression contains any redundant parentheses. Redundant parentheses are those that do not change the order of evaluation (e.g., `((a+b))` or `(a)`).
+The problem aims to identify if an arithmetic expression contains redundant parentheses, specifically if a pair of parentheses encloses an expression that does not contain any operator or is empty.
 
 Approach:
-The solution uses a stack. It pushes opening parentheses and operators onto the stack. When a closing parenthesis is encountered, it checks if the top of the stack is an opening parenthesis; if so, redundancy is found and it returns `True`. Otherwise, it pops elements from the stack until the matching opening parenthesis is found, ensuring at least one operator was enclosed.
+The solution uses a stack to keep track of opening parentheses and operators. When a closing parenthesis is encountered, it checks if the top of the stack is an opening parenthesis, indicating redundancy (e.g., "()", or "(expression)" where "expression" itself contains no operator at the outermost level). If not, it pops operators until the matching opening parenthesis is found, then pops that parenthesis.
 
 Time Complexity:
-O(N) because each character in the input string `s` is processed once, and stack operations take O(1) time.
+O(N)
+The solution iterates through the input string once, and each character results in constant-time stack operations (push, pop, peek).
 
 Space Complexity:
-O(N) in the worst case, as the stack `st` can store up to N characters for deeply nested expressions (e.g., `((((...))))`).
+O(N)
+In the worst case (e.g., an expression with many nested opening parentheses and operators before any closing ones), the stack can store up to N characters.
 
 Optimization Notes:
-This approach is optimal. Any algorithm must examine each character of the expression at least once (O(N) time), and storing intermediate parenthesis states often requires O(N) space.
+The solution is optimal. We must traverse the entire string at least once to check all parentheses, making O(N) time unavoidable. The use of a stack for parenthesis matching and operator tracking typically requires O(N) space in the worst case for nested structures, which is also generally optimal for this type of problem.
 
 ### 💻 Implementation
 ```py
@@ -45,19 +47,21 @@ class Solution():
 **Platform:** LeetCode
 
 Problem Insight:
-The problem asks to find the maximum area of a square that can be inscribed within the intersection of any two axis-aligned rectangles from a given set.
+To find the largest square area from the intersection of any two rectangles, we must iterate through all possible pairs of rectangles. For each pair, calculate the dimensions of their intersection and find the maximum possible square side within it.
 
 Approach:
-The solution iterates through all unique pairs of rectangles. For each pair, it calculates the dimensions of their intersection. The side length of the largest square that can fit within this intersection is the minimum of the intersection's width and height. The maximum square area found across all pairs is maintained and returned.
+The solution iterates through all unique pairs of rectangles. For each pair, it calculates the width and height of their intersection using min/max coordinate comparisons. If an intersection exists, the side of the largest possible inscribed square is the minimum of the intersection's width and height, and the maximum area is updated accordingly.
 
 Time Complexity:
-`O(N^2)`, because it involves nested loops iterating through all `N * (N-1) / 2` unique pairs of rectangles, with constant time operations inside the loops.
+O(N^2)
+The solution uses two nested loops to iterate through all N*(N-1)/2 distinct pairs of rectangles, with constant time operations inside the loops.
 
 Space Complexity:
-`O(1)`, as only a few constant extra variables are used regardless of the input size `N`.
+O(1)
+A few variables are used to store intermediate calculations and the result, none of which scale with the input size N.
 
 Optimization Notes:
-Yes, this approach is generally optimal. To guarantee finding the largest square among *any* pair, one must inspect all possible pairs of rectangles. There isn't a known faster general algorithm for this specific problem than iterating through all `O(N^2)` pairs.
+The solution is optimal for the typical constraints of this problem (e.g., N <= 50). It directly computes the answer by checking all N^2 pairs, which is efficient enough for small N. More complex algorithms like sweep-line methods would be significantly harder to implement and likely unnecessary for the given constraints, offering little or no practical advantage for the stated problem size.
 
 ### 💻 Implementation
 ```cpp
