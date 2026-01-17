@@ -2,14 +2,20 @@ import os
 from pathlib import Path
 import google.generativeai as genai
 
-# ✅ Gemini requires GOOGLE_API_KEY
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+# Gemini strictly expects GOOGLE_API_KEY
+api_key = os.getenv("GOOGLE_API_KEY")
+if not api_key:
+    raise RuntimeError("GOOGLE_API_KEY not found")
 
-model = genai.GenerativeModel("gemini-1.5-flash")
+genai.configure(api_key=api_key)
+
+model = genai.GenerativeModel("gemini-2.5-flash")
 
 today = os.getenv("TODAY")
-base = Path(f"solutions/{today}")
+if not today:
+    raise RuntimeError("TODAY env variable not set")
 
+base = Path(f"solutions/{today}")
 print("Looking in:", base)
 
 if not base.exists():
