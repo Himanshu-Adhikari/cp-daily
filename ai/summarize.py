@@ -83,6 +83,7 @@ CODE:
 ### 💻 Implementation
 ```{file.suffix[1:]}
 {code}
+```
 """
 
 readme.write_text(content)
