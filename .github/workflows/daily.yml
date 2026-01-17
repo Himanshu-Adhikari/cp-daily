@@ -1,0 +1,36 @@
+name: Daily CP Automation
+
+on:
+  schedule:
+    - cron: "30 15 * * *"   # 9:00 PM IST
+  workflow_dispatch:
+
+jobs:
+  auto:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install Gemini SDK
+        run: pip install google-generativeai
+
+      - name: Generate AI Summary
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TODAY: $(date +%Y-%m-%d)
+        run: python ai/summarize.py
+
+      - name: Commit & Push
+        run: |
+          git config --global user.name "cp-bot"
+          git config --global user.email "cp-bot@github.com"
+          git add .
+          git commit -m "Daily CP | $(date +%Y-%m-%d)" || echo "No changes"
+          git push
