@@ -42,34 +42,35 @@ for file in sorted(base.iterdir()):
     code = file.read_text()
 
     prompt = f"""
-You are an expert competitive programming mentor.
+You are a competitive programming mentor.
 
-Analyze the solution below  and respond concisely but thoughtfully using this structure:
-
-Problem Insight:
-- What problem is being solved (1–2 lines).
-
-Approach:
-- Key idea and algorithm used (short and precise).
-
-Time Complexity:
-- Big-O with brief justification.
-
-Space Complexity:
-- Big-O with brief justification.
-
-Optimization Notes:
-- Is this optimal?
-- If yes, explain why briefly.
-- If no, suggest a better approach in 1–2 lines.
-
-Do NOT repeat the code.
-Do NOT be verbose.
+Analyze the solution below and respond using ONLY the following plain-text format.
+Do NOT use markdown.
+Do NOT include code.
+Do NOT include backticks.
 Do NOT add extra sections.
 
-Code:
+FORMAT (follow exactly):
+
+Problem Insight:
+<1–2 concise lines>
+
+Approach:
+<core idea in 2–3 lines>
+
+Time Complexity:
+<Big-O with 1-line justification>
+
+Space Complexity:
+<Big-O with 1-line justification>
+
+Optimization Notes:
+<Is it optimal? Why or what can be improved?>
+
+CODE:
 {code}
 """
+
 
     response = model.generate_content(prompt)
 
