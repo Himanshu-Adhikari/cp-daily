@@ -9,22 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-To form the smallest number by removing k digits, prioritize removing larger digits from the left side of the number.
-This requires building a sequence of digits that is non-decreasing from left to right.
+To obtain the smallest number after removing K digits, a greedy strategy is employed using a monotonic stack. Removing larger digits that precede smaller digits is prioritized.
 
 Approach:
-Utilize a monotonic increasing stack. Iterate through digits, popping larger digits from the stack (and decrementing k) if the current digit is smaller. Append the current digit. If k is still positive after iterating, remove the remaining k digits from the end of the stack. Finally, trim any leading zeros.
+Iterate through the digits, maintaining a stack to build the result such that digits are non-decreasing. If the current digit is smaller than the stack's top and K removals are available, pop from the stack. After processing all digits, if K is still positive, remove remaining digits from the end of the stack. Finally, clean up leading zeros.
 
 Time Complexity:
 O(N)
-Each character is pushed onto and popped from the stack at most once. Final string construction is also linear.
+Each digit is pushed and popped from the stack at most once. String operations like extend and join take O(N).
 
 Space Complexity:
 O(N)
-The stack can store up to N characters, and the resulting string also takes up to N characters.
+The stack can store up to N digits in the worst case.
 
 Optimization Notes:
-The solution is optimal. It processes each digit of the input string a constant number of times in a single pass, achieving the best possible asymptotic time complexity.
+The solution is optimal in terms of time and space complexity (O(N) for both). A minor correction is needed for the final leading zero handling: if the processed string after removing leading zeros is empty, it should return '0'. For example, "100", k=2 should correctly result in "0", not "00", and "100", k=3 should result in "0", not "". The current code's logic `return ''.join(stk[ix:])` needs to be `return ''.join(stk[ix:]) or '0'` to handle these edge cases correctly.
 
 ### 💻 Implementation
 ```py
@@ -56,19 +55,21 @@ class Solution:
 **Platform:** LeetCode
 
 Problem Insight:
-The goal is to find the largest square submatrix within a given matrix whose sum of elements does not exceed a specified threshold.
+The problem requires finding the largest square submatrix whose sum of elements does not exceed a given threshold. This involves both range sum queries and optimization for size.
 
 Approach:
-The solution first computes a 2D prefix sum array for O(1) sum calculation of any submatrix. It then uses binary search on the possible side lengths, leveraging a helper function to check if a square of a given side length exists that satisfies the sum constraint.
+First, a 2D prefix sum array is precomputed to allow O(1) calculation of any submatrix sum. Then, binary search is applied to find the maximum possible side length of the square. For each side length tested by the binary search, an O(M*N) check iterates through all possible square submatrices to see if any meet the sum criteria using the prefix sums.
 
 Time Complexity:
-O(m * n * log(min(m, n))) because prefix sums are O(m*n), and binary search (log(min(m,n)) iterations) calls a check function that iterates O(m*n) times in the worst case.
+O(M * N * log(min(M, N)))
+Prefix sum computation is O(M*N). The binary search performs log(min(M,N)) iterations, and each iteration calls the 'ok' function which iterates through M*N potential squares.
 
 Space Complexity:
-O(m * n) for storing the 2D prefix sum array.
+O(M * N)
+A 2D prefix sum array of size (M+1)x(N+1) is used to store intermediate sums.
 
 Optimization Notes:
-This solution is optimal. The use of 2D prefix sums and binary search on the answer combines efficient submatrix sum queries with an efficient search strategy for the maximum side length.
+The solution is optimal for this problem. The use of 2D prefix sums is the most efficient way to query submatrix sums. Binary searching on the side length is also optimal because the property "a square of size K exists with sum <= threshold" is monotonic. Further improvement to the overall time complexity would likely require a different problem interpretation or constraints.
 
 ### 💻 Implementation
 ```cpp
