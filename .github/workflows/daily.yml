@@ -3,7 +3,7 @@ name: Daily CP Automation
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 14 * * *"   # 9 PM IST
+    - cron: "29 15 * * *"   # 9 PM IST
 
 jobs:
   auto:
