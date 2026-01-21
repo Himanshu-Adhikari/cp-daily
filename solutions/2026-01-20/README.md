@@ -68,27 +68,79 @@ class Solution {
 
 ## 🔹 Leetcode 3314 Construct The Minimum Bitwise Array I
 **Platform:** LeetCode
+# 3314. Construct the Minimum Bitwise Array I
 
-Problem Insight:
-This problem requires finding two numbers in an array that sum to a specific target value. Efficiently identifying the complement for each number is key.
+## 🧠 Problem Insight
 
-Approach:
-Iterate through the array, storing each number and its index in a hash map. For each current number, calculate the required complement to reach the target and check if this complement already exists in the map.
+This problem requires constructing an array `ans` such that for every index `i`:
 
-Time Complexity:
-O(N)
-Each number is processed once, with hash map operations (insertion, lookup) taking average O(1) time.
+ans[i] | (ans[i] + 1) = nums[i]
 
-Space Complexity:
-O(N)
-In the worst case, the hash map stores up to N entries before the pair is found.
 
-Optimization Notes:
-This approach is optimal. It achieves linear time complexity, which is the fastest possible as every element must be examined at least once.
+Among all possible valid values, we must choose the **minimum** `ans[i]`.  
+If no such value exists, return `-1` for that index.
 
-CODE:
+---
 
-### 💻 Implementation
+## 🔍 Key Observations
+
+- The expression `x | (x + 1)` is **always odd**.
+  - Therefore, if `nums[i]` is **even**, it is **impossible** to form such an `ans[i]`.
+- If `nums[i]` is **odd**, a valid solution exists.
+
+### Bitwise Insight
+- Adding `1` to a number flips the **rightmost `0` bit** to `1` and clears all trailing `1`s.
+- To minimize `ans[i]`, we reverse the smallest possible bit change.
+- The expression  
+((n + 1) & ~n)
+
+isolates the **lowest zero bit** in `n`.
+- Shifting it right by one gives the exact bit to clear in `n`.
+
+---
+
+## 🚀 Approach
+
+1. Iterate through the array `nums`.
+2. If the current number is even, append `-1` to the result.
+3. If the number is odd:
+ - Identify the lowest zero bit.
+ - Clear that bit to construct the minimum valid `ans[i]`.
+
+---
+
+## ⏱️ Complexity Analysis
+
+- **Time Complexity:** `O(N)`  
+Each element is processed once with constant-time bit operations.
+- **Space Complexity:** `O(N)`  
+Extra space is used for the result array.
+
+---
+
+## 💡 Optimization Notes
+
+- Uses pure bit manipulation — no brute force.
+- Optimal solution since every element must be examined at least once.
+
+---
+
+## 💻 Code (C++)
+
 ```cpp
-
+class Solution {
+public:
+  vector<int> minBitwiseArray(vector<int>& nums) {
+      vector<int> res;
+      for (auto& n : nums) {
+          if (n & 1) {
+              auto z = ((n + 1) & ~n) >> 1;
+              res.push_back(n & ~z);
+          } else {
+              res.push_back(-1);
+          }
+      }
+      return res;
+  }
+};
 ```
