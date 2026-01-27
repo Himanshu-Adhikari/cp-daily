@@ -9,50 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-This is a classic grid traversal problem requiring a search algorithm to find a path that matches a given word. The challenge involves exploring all valid adjacent cells while ensuring no cell is revisited within the current path.
+This problem requires traversing a 2D grid to find a specific word by moving to adjacent cells. It is a classic pathfinding challenge that necessitates exploring multiple potential paths and backtracking.
 
 Approach:
-The solution employs a Depth-First Search (DFS) with backtracking. It iterates through each cell in the matrix, initiating a DFS if the cell matches the first character of the word. During DFS, cells are temporarily marked as visited to prevent cycles, and the search continues recursively to adjacent cells until the word is found or all paths are exhausted.
+The solution employs a Depth-First Search (DFS) algorithm. It iterates through each cell of the grid, initiating a DFS call if the cell matches the first character of the word, and uses backtracking to explore all valid paths.
 
 Time Complexity:
-O(M * N * 3^L)
-There are M*N possible starting cells. For each DFS path of length L, at each step, there are at most 3 valid directions (excluding the one just came from).
+O(R * C * 4^L)
+The algorithm starts a DFS from each of R*C cells, and each DFS path can explore up to L steps with 4 possible directions at each step.
 
 Space Complexity:
 O(L)
-The space is used by the recursion call stack, which can go as deep as the length of the word (L).
+The space complexity is dominated by the recursion stack depth of the DFS, which can go up to the length of the word L.
 
 Optimization Notes:
-The solution is generally optimal for the single-word search problem. The M*N*3^L complexity arises from the inherent need to explore all potential paths. Early pruning through character mismatch checks and bounds validation is already incorporated. No significant algorithmic improvements are typically possible for this specific constraint.
-
-CODE:
-class Solution {
-public:
-    vector<pair<int,int>> dir = {
-        {0,1},{1,0},{-1,0},{0,-1}
-    };
-
-    bool dfs(int i, int j, int k,
-             vector<vector<char>>& mat, string& w) {
-        if (k == w.size()) return true;
-        if (i<0 || j<0 || i>=mat.size() || j>=mat[0].size()
-            || mat[i][j] != w[k]) return false;
-        char t = mat[i][j];
-        mat[i][j] = '#';
-        for (auto [x,y] : dir)
-            if (dfs(i+x, j+y, k+1, mat, w)) return mat[i][j]=t, true;
-        mat[i][j] = t;
-        return false;
-    }
-
-    bool isWordExist(vector<vector<char>>& mat, string word) {
-        for (int i=0;i<mat.size();i++)
-            for (int j=0;j<mat[0].size();j++)
-                if (mat[i][j]==word[0] && dfs(i,j,0,mat,word))
-                    return true;
-        return false;
-    }
-};
+This solution is optimal for the given constraints. The exponential factor is inherent to the problem's nature, as it must explore all possible paths of the word's length.
 
 ### 💻 Implementation
 ```cpp
@@ -90,21 +61,19 @@ public:
 **Platform:** LeetCode
 
 Problem Insight:
-This problem asks for the minimum cost to travel from node 0 to node n-1 in a graph with asymmetric edge costs. Each original edge [u, v, cost C] implies two directed edges: u to v with cost C, and v to u with cost 2C.
+This is a shortest path problem on a graph with asymmetric edge costs. An edge (u,v) with cost c implies u->v costs c and v->u costs 2c.
 
 Approach:
-The solution constructs a directed graph representing these asymmetric costs. It then applies Dijkstra's algorithm, starting from node 0, to find the shortest path to node n-1. A priority queue manages nodes to visit, always exploring the node with the current minimum accumulated cost.
+The solution models the problem as a directed graph where each input edge translates into two directed edges with their respective costs. Dijkstra's algorithm is then applied using a priority queue to find the minimum cost from node 0 to node n-1.
 
 Time Complexity:
-O(E log N)
-Graph construction iterates through E edges, each involving map lookups taking O(log N). Dijkstra's algorithm runs in O(E log N) on a graph with N nodes and E edges using a binary heap priority queue.
+O((M+N) log N). Graph construction using map takes O(M log N), and Dijkstra's algorithm, with map lookups and priority queue operations, takes O((M+N) log N), where M is the number of input edges and N is the number of nodes.
 
 Space Complexity:
-O(N + E)
-The adjacency list (map) stores up to N nodes and 2E directed edges. The distance array requires O(N) space, and the priority queue stores at most O(N) entries in the worst case.
+O(N + M). The adjacency map stores 2M directed edges, the distance array uses O(N) space, and the priority queue stores at most O(N) elements.
 
 Optimization Notes:
-The primary issue is a type mismatch: the priority queue stores costs as int, which can overflow if accumulated path costs exceed INT_MAX. These costs should be long long. Additionally, using std::map for the adjacency list introduces an O(log N) factor for lookups; a std::vector of vectors or std::unordered_map could offer faster O(1) average time lookups.
+The priority queue uses int for distance values, which could lead to overflow if actual path costs exceed INT_MAX. Using long long for priority queue elements would be safer. Replacing std::map with std::vector for the adjacency list would optimize graph construction and access to O(N+M), reducing the overall time complexity for Dijkstra to O((M+N) log N) effectively if priority queue uses long long. Using LLONG_MAX for initial distances would prevent potential issues if a reachable path happens to cost INT_MAX.
 
 ### 💻 Implementation
 ```cpp
