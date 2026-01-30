@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem requires rearranging a queue by interleaving its first half with its second half. This necessitates temporarily storing the halves to achieve the desired interleaved order.
+The problem requires rearranging a queue by interleaving its first half with its second half. This involves splitting the queue and then merging the two halves alternately.
 
 Approach:
-The solution separates the original queue into two auxiliary queues, one for the first half and one for the second half. It then reconstructs the original queue by alternately pushing elements from the first half queue and the second half queue.
+The solution divides the original queue into two auxiliary queues: one for the first half ('f') and one for the second half ('s'). It then reconstructs the original queue by repeatedly pushing an element from 'f' followed by an element from 's' until both auxiliary queues are empty.
 
 Time Complexity:
 O(N)
-Each element is moved between queues a constant number of times (from original to auxiliary, then from auxiliary back to original).
+Every element in the queue is processed and moved a constant number of times through the three loops.
 
 Space Complexity:
 O(N)
-Two auxiliary queues are used, each storing up to N/2 elements, where N is the total number of elements.
+Two auxiliary queues, 'f' and 's', are used to store elements, each holding approximately N/2 elements.
 
 Optimization Notes:
-The solution is optimal in terms of time complexity O(N) as every element must be processed. In terms of space complexity, it uses O(N) auxiliary space. While specific in-place algorithms or use of a recursion stack might achieve O(1) auxiliary space in other contexts, for standard queue operations and explicit temporary storage, O(N) space using auxiliary queues is a common and practical approach.
+The time complexity of O(N) is optimal because every element must be touched at least once. The space complexity is O(N) due to the use of two auxiliary queues. While some advanced approaches or specific data structures (like a deque or using a stack) could potentially achieve O(1) auxiliary space, this O(N) space solution is a straightforward and common method for standard queue operations.
 
 ### 💻 Implementation
 ```cpp
@@ -50,21 +50,21 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-This problem requires transforming segments of a source string into corresponding target segments. It combines an all-pairs shortest path problem on word transformations with dynamic programming for segment-based string conversion.
+This problem requires finding the minimum cost to transform a source string into a target string. Transformations are defined as converting one word to another, can be chained, and apply to substrings.
 
 Approach:
-First, unique words from original and changed lists are mapped to integer IDs using a Trie. An adjacency matrix is built to store direct transformation costs between words. Floyd-Warshall algorithm is then used to compute the minimum cost to transform any word ID to another. Finally, dynamic programming determines the minimum cost to convert source to target, where dp[i] represents the cost for source[0...i] to target[0...i]. Each dp[i] considers matching source[j] to target[j] (cost 0) or transforming a substring source[j...i] to target[j...i] using the precomputed costs.
+A Trie is used to map all distinct words (from original and changed lists) to unique integer IDs. These IDs form nodes in a graph where direct transformation costs are edge weights. Floyd-Warshall algorithm then computes all-pairs shortest paths in this graph, representing minimum costs to transform any registered word into any other. Finally, dynamic programming is used on the strings: dp[i] is the minimum cost to convert source[0...i] to target[0...i], calculated by either a direct character match or by finding a substring source[j...i] transformable to target[j...i] using precomputed word costs.
 
 Time Complexity:
-O(P^3 + N^2)
-P is the number of unique words (at most 2 * M). Floyd-Warshall takes O(P^3). The dynamic programming loop is O(N^2).
+O(P^3 + N^2 * L_max)
+Where N is source string length, P is number of unique words (at most 2 * M where M is count of original/changed pairs), and L_max is max word length. P^3 for Floyd-Warshall dominates if P is large. N^2 * L_max for the DP part.
 
 Space Complexity:
-O(P^2 + N + M*L_max)
-O(P^2) for the adjacency matrix, O(N) for the DP array, and O(M*L_max) for the Trie (L_max is max word length).
+O(P^2 + Sum_Lengths_of_All_Words_Trie + N)
+P^2 for the adjacency matrix, Sum_Lengths_of_All_Words_Trie for Trie nodes, and N for the DP array.
 
 Optimization Notes:
-The solution is not optimal for the typical maximum constraints of this problem (N=1000, M=2000). P can be up to 2 * M (4000), making the O(P^3) Floyd-Warshall step around 6.4 * 10^10 operations, which is too slow. If P is much smaller in practice or the test cases are weak, it might pass.
+The O(P^3) complexity from the Floyd-Warshall algorithm is likely the dominant bottleneck. If P (the number of unique words) is large (e.g., 2000-4000 based on typical competitive programming constraints for M), this step would result in a Time Limit Exceeded (TLE). For example, 4000^3 operations is prohibitively slow.
 
 ### 💻 Implementation
 ```cpp
