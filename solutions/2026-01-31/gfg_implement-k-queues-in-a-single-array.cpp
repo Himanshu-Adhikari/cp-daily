@@ -21,7 +21,7 @@ class kQueues {
     }
 
     bool isEmpty(int i) {
-        return curr==0;
+        return m[i].empty();
     }
 
     bool isFull() {
