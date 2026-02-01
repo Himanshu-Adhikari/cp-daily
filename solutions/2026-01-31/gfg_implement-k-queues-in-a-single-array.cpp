@@ -1,5 +1,4 @@
 class kQueues {
-
   public:
     int sz;
     int k,curr;
