@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-To maximize profit, we need to find the largest difference between a future selling price and a past buying price. This implies finding a peak after a valley.
+The key to maximizing profit is to buy low and sell high. For any given buying day, the optimal selling day must be one in the future with the highest possible price.
 
 Approach:
-The solution iterates backwards from the second-to-last day. It maintains the maximum price encountered from the right (potential selling price) and updates the maximum profit by considering buying on the current day and selling at the highest price seen to its right.
+The solution iterates backward through the prices, keeping track of the maximum price encountered from the current day to the end of the array. For each day, it calculates the potential profit by subtracting the current day's price from this maximum future price and updates the overall maximum profit.
 
 Time Complexity:
-O(N)
-The solution iterates through the prices array once from right to left.
+O(n)
+The single loop iterates through the prices array once from right to left.
 
 Space Complexity:
 O(1)
-It uses a fixed number of variables regardless of the input size.
+Only a few constant extra variables are used for storing the result and maximum price.
 
 Optimization Notes:
-This solution is optimal. It processes each price exactly once to find the maximum profit, achieving the best possible time complexity of O(N).
+This solution is optimal. It achieves O(n) time complexity and O(1) space complexity, which is the most efficient possible as every price must be examined at least once.
 
 ### 💻 Implementation
 ```py
@@ -41,21 +41,19 @@ class Solution:
 **Platform:** LeetCode
 
 Problem Insight:
-This solution aims to identify if a given sequence of numbers is "trionic," meaning it strictly increases to a peak, then strictly decreases. It also applies specific constraints on the minimum length of the increasing and decreasing segments.
+The array must conform to a specific "trionic" shape: strictly increasing, followed by strictly decreasing, followed by another strictly decreasing segment. All three parts must contain at least two elements.
 
 Approach:
-The solution uses two passes to find key indices: 'l' for the peak from the left (end of increasing prefix) and 'j' for the start of the strictly decreasing suffix from the right. It then applies conditions for a valid trionic structure (e.g., ensuring both increasing and decreasing segments exist and have minimum length) before finally verifying the segment between 'l' and 'j' is strictly decreasing.
+First, identify the longest strictly increasing prefix ending at index 'l'. Next, find the longest strictly decreasing suffix starting at index 'j'. Then, verify structural constraints: the increasing prefix must have at least two elements, the decreasing suffix must have at least two elements, and 'l' must be strictly less than 'j'. Finally, ensure the segment from 'nums[l]' to 'nums[j]' is also strictly decreasing.
 
 Time Complexity:
-O(N)
-Justification: The solution involves three separate loops, each iterating through the array at most once, resulting in a linear scan.
+O(N) because the solution involves three separate loops, each iterating through the array at most once.
 
 Space Complexity:
-O(1)
-Justification: Only a few integer variables are used to store indices and previous values, regardless of input size.
+O(1) because the solution only uses a few constant-space variables for indices and temporary comparisons.
 
 Optimization Notes:
-The solution is optimal in terms of time complexity (O(N) is required to inspect all elements) and space complexity (O(1)). However, the specific definition of "trionic" implemented, particularly the condition j==n-1, seems to exclude sequences generally considered bitonic (like [1,2,3,2,1]) if the problem expects a standard definition. If a standard bitonic check is intended, this condition would need adjustment.
+The solution is optimal in both time and space complexity. It requires examining all elements at least once (O(N) time) and uses constant extra space (O(1) space). No further significant optimization is possible.
 
 ### 💻 Implementation
 ```py
