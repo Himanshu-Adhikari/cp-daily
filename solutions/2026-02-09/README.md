@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem aims to find the number of rotations applied to a sorted array, which is equivalent to finding the index of its minimum element.
+The number of rotations in a sorted array is determined by the index of its minimum element. Finding this index gives the rotation count.
 
 Approach:
-The solution first identifies the minimum value within the array using a linear scan. Subsequently, it iterates through the array again to locate the first occurrence of this minimum value and returns its index as the rotation count.
+The solution first finds the absolute minimum value present in the array. Then, it linearly iterates through the array to locate the first occurrence of this minimum value and returns its index.
 
 Time Complexity:
 O(N)
-Finding the minimum element with min_element takes O(N), and then iterating through the array to find its index also takes O(N) in the worst case.
+Finding the minimum element using *min_element* takes O(N), and the subsequent linear search for its index also takes O(N).
 
 Space Complexity:
 O(1)
-The solution uses only a few constant extra variables, independent of the input array size.
+Only a constant amount of extra space is used for variables, regardless of the input array size.
 
 Optimization Notes:
-It is not optimal. This problem can be solved more efficiently in O(log N) time using a binary search approach to locate the minimum element (the pivot point) in the rotated sorted array. The current solution's linear scan makes it less efficient for larger inputs.
+The solution is not optimal. For a rotated sorted array, the index of the minimum element can be found in O(logN) time using a modified binary search, which is much faster than the current O(N) approach for larger arrays.
 
 ### 💻 Implementation
 ```cpp
@@ -43,21 +43,49 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-The goal is to transform an arbitrary Binary Search Tree (BST) into a height-balanced BST to ensure efficient O(log N) operations.
+Balancing a BST means rearranging its nodes to minimize height while preserving the BST property. An in-order traversal provides nodes in a sorted sequence, ideal for reconstructing a balanced tree.
 
 Approach:
-The solution first flattens the BST into a sorted list of nodes using an in-order traversal. It then recursively builds a balanced BST from this sorted list by picking the middle element as the root, and then recursively building its left and right subtrees from the remaining parts of the list.
+The solution first flattens the input BST into a sorted list of nodes using an in-order traversal. Then, it recursively builds a new balanced BST from this sorted list by choosing the middle element as the root, and recursively constructing the left and right subtrees from the remaining halves.
 
 Time Complexity:
 O(N)
-Justification: O(N) for in-order traversal to populate the vector and O(N) for building the new tree structure from the vector.
+An in-order traversal takes O(N) time, and constructing the new tree from the sorted list also takes O(N) time as each node is processed once.
 
 Space Complexity:
 O(N)
-Justification: O(N) auxiliary space is used to store all TreeNode pointers in the vector 'v', plus O(N) for the recursion stack in the worst case for the initial traversal.
+A vector stores N TreeNode pointers. The recursion stack for the initial in-order traversal can be O(N) in the worst case for a skewed tree.
 
 Optimization Notes:
-The solution is optimal in time complexity O(N) as all nodes must be processed. It is not space optimal compared to algorithms like the Day-Stout-Warren algorithm, which can balance a BST in-place using O(1) auxiliary space (excluding recursion stack for the initial traversal). However, for reconstructing the tree by re-parenting, O(N) space for the node list is a common and acceptable approach.
+This solution is optimal for time complexity O(N) as all nodes must be visited. It uses O(N) auxiliary space, which is generally considered optimal for this problem given the need to effectively reorder all nodes. While more complex in-place balancing algorithms exist, they typically require node-specific metadata or more intricate pointer manipulation.
+
+CODE:
+class Solution {
+public:
+    vector<TreeNode*> v;
+    int n;
+    void rec(TreeNode* root) {
+        if (!root)
+            return;
+        rec(root->left);
+        v.push_back(root);
+        rec(root->right);
+    }
+    TreeNode* bld(int l, int r) {
+        if (l >r)
+            return NULL;
+        int m=l+(r-l)/2; 
+        TreeNode* res = v[m];
+        res->left = bld(l, m-1);
+        res->right = bld(m + 1, r);
+        return res;
+    }
+    TreeNode* balanceBST(TreeNode* root) {
+        rec(root);
+        n = v.size();
+        return bld(0, n - 1);
+    }
+};
 
 ### 💻 Implementation
 ```cpp
