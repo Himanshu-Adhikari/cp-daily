@@ -17,7 +17,6 @@ model = genai.GenerativeModel("gemini-2.5-flash")
 
 # ---- Locate today's solutions ----
 base = Path(f"solutions/{today}")
-base = Path(f"solutions/2026-02-08")
 print("Looking in:", base)
 
 if not base.exists():
@@ -26,8 +25,7 @@ if not base.exists():
 
 readme = base / "README.md"
 
-# content = f"""# 📅 Daily CP Solutions — {today}
-content = f"""# 📅 Daily CP Solutions — 2026-02-08
+content = f"""# 📅 Daily CP Solutions — {today}
 
 This document contains concise, interview-ready explanations for the problems solved today.
 Each solution includes the core idea, complexity analysis, and optimization insight.
