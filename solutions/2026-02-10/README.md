@@ -9,21 +9,19 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-This problem requires finding the minimum possible eating speed (kilos per hour) for Koko to finish all banana piles within a given total time limit. It is solved using binary search on the answer.
+Find the minimum integer eating speed that allows finishing all banana piles within given hours. The time taken is monotonically decreasing with increasing speed, enabling binary search.
 
 Approach:
-The solution employs binary search over the range of possible eating speeds. For each candidate speed, it calculates the total hours needed to consume all banana piles. If the total hours are within the limit, it tries smaller speeds; otherwise, it tries larger speeds.
+Employ binary search on the possible range of eating speeds. For each candidate speed, calculate the total hours needed to eat all piles. Adjust the search range based on whether the total hours exceed the allowed limit.
 
 Time Complexity:
-O(N * log(MAX_PILE_SIZE))
-Binary search performs log(MAX_PILE_SIZE) iterations, and each iteration involves a linear scan through N piles.
+O(N * log(MaxPileSize)). The binary search performs log(MaxPileSize) iterations, and each iteration involves an O(N) loop to sum the hours for all piles.
 
 Space Complexity:
-O(1)
-The solution uses only a constant amount of extra space for variables.
+O(1). The solution uses a constant amount of extra space for variables during the calculation.
 
 Optimization Notes:
-The solution is optimal. The upper bound for the binary search can be max(arr) instead of 10^15 for a tighter search range, but this does not change the asymptotic complexity. The 'if m > i' check is equivalent to the general ceiling division and could be omitted for slightly cleaner code without affecting correctness or complexity.
+The solution is optimal for this problem's constraints and type. The upper bound for binary search could be set more precisely to max(arr) instead of a large constant like 10**15, though it doesn't change asymptotic complexity.
 
 ### 💻 Implementation
 ```py
@@ -48,19 +46,21 @@ class Solution:
 **Platform:** LeetCode
 
 Problem Insight:
-The problem seeks the longest continuous subarray where the count of distinct odd numbers is exactly equal to the count of distinct even numbers within that subarray.
+The problem seeks the longest subarray where the number of unique odd elements equals the number of unique even elements. The provided solution employs a brute-force check of all possible subarrays.
 
 Approach:
-The solution uses a brute-force approach by iterating through all possible subarrays. For each subarray, it maintains a count of unique odd and unique even numbers using a hash map to track seen elements. If the unique odd and even counts are equal, the subarray length is checked against the maximum result.
+Iterate through all possible starting indices 'i' and ending indices 'j' of subarrays. For each subarray [i, j], count the unique odd and unique even numbers present. If these counts are equal, update the maximum length found so far.
 
 Time Complexity:
-O(N^2 log N). The nested loops run O(N^2) times, and map operations inside the inner loop take O(log N) time in the worst case.
+O(N^2 log N)
+The outer loop runs N times, the inner loop runs up to N times, and map operations (count, insert) take O(log N) in the worst case.
 
 Space Complexity:
-O(N). The hash map stores unique elements for the current subarray, potentially up to N distinct elements.
+O(N)
+A map is used to track unique elements within each subarray, storing up to N distinct elements in the worst case.
 
 Optimization Notes:
-The solution is not optimal. Its O(N^2 log N) time complexity is inefficient for larger inputs (N > 5000). An optimal solution would likely achieve O(N) or O(N log N) by employing a more sophisticated approach, such as a sliding window with frequency maps to efficiently track unique counts or a hash map for storing (unique_odd_count - unique_even_count) states encountered.
+The solution is not optimal. It re-calculates unique odd and even counts for every possible subarray from scratch. A more efficient approach could involve a sliding window or using a hash map to store prefix balance values, potentially achieving O(N) or O(N log N) time complexity by incrementally updating counts and using a frequency map to track uniqueness as the window slides.
 
 ### 💻 Implementation
 ```cpp
