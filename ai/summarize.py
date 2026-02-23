@@ -16,7 +16,7 @@ genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 # ---- Locate today's solutions ----
-base = Path(f"solutions/{today}")
+base = Path(f"solutions/{today[:7]}/{today}")
 print("Looking in:", base)
 
 if not base.exists():
