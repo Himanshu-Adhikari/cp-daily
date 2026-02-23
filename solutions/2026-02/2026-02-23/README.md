@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem aims to find the union of two integer arrays, meaning all distinct elements present in either array, typically returned in sorted order.
+The problem requires finding all unique elements present in either of two given arrays, returning them in sorted order.
 
 Approach:
-The solution uses a standard library set. It inserts all elements from the first array into the set, then iterates through the second array and inserts its elements into the same set. Finally, it converts the set into a vector for the result.
+A std::set is used to store elements from both input arrays. The set inherently handles uniqueness and maintains elements in sorted order. All elements from the first array are added, then all from the second, and finally the set's contents are converted to a vector.
 
 Time Complexity:
-O((N+M) log (N+M))
-Each of the N+M elements is inserted into a set, with each insertion taking O(log K) time where K is the current set size.
+O((N+M) log (N+M)).
+Justification: Each of the N elements from the first array and M elements from the second array is inserted into a set, taking logarithmic time per insertion, where the log term depends on the current set size.
 
 Space Complexity:
-O(N+M)
-The set stores up to N+M unique elements, and the resulting vector also stores up to N+M elements.
+O(N+M).
+Justification: The set stores up to N+M unique elements, and the returned vector also occupies space for these elements.
 
 Optimization Notes:
-The solution is correct but not optimal if the input arrays are already sorted. A two-pointer approach could achieve O(N+M) time complexity by iterating through both sorted arrays simultaneously, avoiding the logarithmic factor from set operations.
+This approach is optimal for its simplicity and robustness, leveraging the properties of std::set for uniqueness and sorted output. If the input arrays were guaranteed to be sorted, a two-pointer approach could achieve O(N+M) time complexity with O(1) auxiliary space (excluding the result vector).
 
 ### 💻 Implementation
 ```cpp
@@ -42,21 +42,21 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-The problem checks if every possible binary string of length k is present as a substring within s.
+The problem requires checking if every possible binary string of length k (totaling 2^k unique codes) exists as a substring within the input string s. It essentially asks for the count of distinct k-length substrings to equal 2^k.
 
 Approach:
-The solution extracts all substrings of length k, adds them to a hash set, and then verifies if the set's size equals 2^k.
+The solution generates all possible substrings of length k from the input string s. Each unique k-length substring is stored in a hash set. After processing all substrings, the size of the set is compared against 2^k.
 
 Time Complexity:
-O(n * k^2)
-The outer loop runs n-k+1 times. Building each k-length substring using repeated string concatenation takes O(k^2), and set insertion takes O(k).
+O(N * K^2)
+Justification: There are N-K+1 substrings. Each substring is constructed using repeated string concatenation in O(K^2) time and then added to the hash set in O(K) average time.
 
 Space Complexity:
-O(2^k * k)
-The set stores at most 2^k unique substrings, each of length k.
+O(min(N, 2^K) * K)
+Justification: The hash set stores at most min(N-K+1, 2^K) unique strings, each of length K.
 
 Optimization Notes:
-The solution is not optimal. Using string slicing s[i:i+k] to extract substrings would reduce the time complexity for substring creation to O(k), making the total O(n*k). A more advanced rolling hash approach could achieve O(n) by representing substrings as integers and updating them in O(1), leading to O(n) total time assuming O(1) set operations for integers.
+The current code builds substrings using inefficient repeated string concatenation, resulting in O(K^2) per substring. This can be improved to O(K) per substring by using Python's string slicing (s[i:i+k]), reducing total time to O(N*K). For binary strings, a more optimal solution uses bit manipulation (rolling hash or integer conversion) to process each substring in O(1) average time and store them in a boolean array or integer set, achieving O(N + 2^K) time complexity.
 
 ### 💻 Implementation
 ```py
