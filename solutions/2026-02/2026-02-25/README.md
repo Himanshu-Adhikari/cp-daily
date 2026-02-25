@@ -9,21 +9,19 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-This problem transforms array elements to +1 (if arr[i] > k) or -1 (if arr[i] <= k) and aims to find the longest subarray where the sum of these transformed values is positive. It's a prefix sum variant.
+The problem asks for the longest subarray where the count of elements greater than 'k' strictly exceeds the count of elements less than or equal to 'k'. This is transformed into finding the longest subarray whose sum (after mapping elements > k to +1 and others to -1) is strictly positive.
 
 Approach:
-The solution uses prefix sums and an unordered_map to store the first occurrence of each prefix sum. It iterates through the array, updating the current prefix sum. If the current prefix sum is positive, the subarray from index 0 to the current index is a candidate. Otherwise, it checks if a previous prefix sum exists such that the subarray sum ending at the current index is exactly 1.
+The solution transforms the input array into an array of +1s and -1s based on comparison with 'k'. It then calculates prefix sums. It records the first occurrence of each prefix sum in a hash map. The maximum length is updated if the current prefix sum is positive or if a previous prefix sum exists such that the subarray sum between them is exactly 1.
 
-Time Complexity:
-O(N)
-The loop iterates N times, and hash map operations (insertions, lookups) take average O(1) time.
+Time Complexity: O(N)
+Justification: The code iterates through the array once, and hash map operations (insertion, lookup) take average O(1) time.
 
-Space Complexity:
-O(N)
-In the worst case, all N prefix sums are distinct and stored in the hash map.
+Space Complexity: O(N)
+Justification: In the worst case, all prefix sums encountered can be distinct, requiring up to N entries in the hash map.
 
 Optimization Notes:
-This solution effectively finds the longest subarray where the sum of transformed elements is exactly 1, or where the sum from the beginning of the array is positive. While this is optimal for finding a sum of exactly 1, it might not be optimal for finding *any* sum strictly greater than 0 if the longest such subarray has a sum greater than 1 and does not start at index 0. A robust general solution for "longest subarray with sum strictly greater than 0" with varying (positive and negative) transformed elements typically involves a `std::map` (O(N log N)) or a specialized monotonic queue technique (O(N)) to efficiently find the earliest prefix sum less than the current one.
+The provided solution is not optimal for the general problem of finding the longest subarray with a strictly positive sum. While it correctly identifies positive-sum subarrays starting from index 0, and subarrays with a sum of exactly 1 (by checking for 'current_sum - 1' in the map), it fails to find subarrays whose sum is greater than 1 but do not start at index 0 and whose total prefix sum is currently non-positive. A more general approach for "longest subarray with sum > 0" is needed to cover all such cases.
 
 ### 💻 Implementation
 ```cpp
@@ -57,21 +55,21 @@ int longestSubarray(vector<int> &arr, int k) {
 **Platform:** LeetCode
 
 Problem Insight:
-The task is to sort an array of integers primarily by their number of set bits (bit count), and secondarily by their numerical value if bit counts are identical.
+The task is to sort an array of integers based on the number of set bits in their binary representation, using the original integer value as a tie-breaker.
 
 Approach:
-The solution uses Python's built-in sort with a custom key function. The key for each number is a tuple (its bit count, the number itself), which allows Python's tuple comparison to handle the multi-level sorting criteria directly.
+The solution uses Python's built-in sort with a custom key function. For each number, it generates a tuple (number_of_set_bits, number_itself), allowing the sort to naturally handle the two-level comparison criteria.
 
 Time Complexity:
 O(N log N)
-Sorting N elements with a comparison sort takes O(N log N) time, and bit_count operations are efficient (effectively O(1) for typical integer sizes).
+Sorting N elements typically takes N log N comparisons, and counting bits for an integer (x.bit_count()) is an O(1) operation for fixed-size integers.
 
 Space Complexity:
-O(N)
-Python's Timsort, used by list.sort(), requires O(N) auxiliary space in the worst case.
+O(log N)
+Python's Timsort (used by list.sort()) requires O(log N) auxiliary space for its merging operations.
 
 Optimization Notes:
-This solution is optimal for a comparison-based sort. It leverages Python's efficient built-in sorting algorithm and its native bit_count method, achieving the best possible asymptotic time complexity.
+This solution is optimal for the given constraints. Sorting cannot be done faster than O(N log N) asymptotically, and the bit counting is highly efficient, often implemented as a hardware instruction.
 
 ### 💻 Implementation
 ```py
