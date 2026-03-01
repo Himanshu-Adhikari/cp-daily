@@ -9,20 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-Rearrange an array by moving all non-zero elements to its beginning while preserving their relative order, then fill the remaining positions with zeros.
+The problem requires reordering an array to place all zero elements at the end while preserving the relative order of non-zero elements.
 
 Approach:
-First, iterate through the array to copy non-zero elements to the start using a 'write' pointer and count all zeros.
-Second, fill the remaining positions from the 'write' pointer to the end of the array with zeros, based on the counted number of zeros.
+The solution uses two passes. The first pass moves all non-zero elements to the beginning of the array and counts the total number of zeros. The second pass then fills the remaining positions at the end of the array with the counted zeros.
 
 Time Complexity:
-O(N) because the solution iterates through the array twice, each pass taking linear time proportional to the array size N.
+O(N)
+The first loop iterates N times and the second loop iterates at most N times, resulting in linear time complexity.
 
 Space Complexity:
-O(1) because it modifies the array in-place and uses only a constant number of auxiliary variables for pointers and counts.
+O(1)
+Only a few constant extra variables (ct, n, ptr) are used, independent of the input array size.
 
 Optimization Notes:
-This solution is optimal in both time and space complexity. An O(N) time is required to check all elements, and O(1) space is achieved by performing modifications directly within the input array. No further asymptotic improvements are possible.
+It is optimal. The solution achieves O(N) time complexity because each element is processed a constant number of times, and O(1) space complexity as it modifies the array in-place without auxiliary data structures.
 
 ### 💻 Implementation
 ```cpp
@@ -53,23 +54,19 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-Each digit 'd' in the input string 'n' requires 'd' numbers to have a '1' at that position.
-The maximum digit present in 'n' determines the minimum count of required partitions.
+The minimum number of deci-binary numbers required to sum up to a given number is determined by its largest digit. Each deci-binary number can contribute at most 1 to any specific digit place.
 
 Approach:
-Iterate through the string 'n' to find the character representing the largest digit.
-Convert this largest digit character to an integer to get the minimum number of partitions.
+Identify the largest digit present in the input string representation of the number. This largest digit directly corresponds to the minimum count of deci-binary numbers needed.
 
 Time Complexity:
-O(L), where L is the length of string n.
-The solution iterates through the input string once to find the maximum digit.
+O(L) where L is the length of the string n. We iterate through the string once to find the maximum character.
 
 Space Complexity:
-O(1)
-Only a few constant space variables are used to track the maximum digit.
+O(1). We only store a few variables (the maximum character found so far) irrespective of the input string's length.
 
 Optimization Notes:
-This solution is optimal. It inherently requires at least one pass through the input string to identify the maximum digit, which this approach achieves.
+This solution is optimal. It directly computes the minimum possible value, and the computation involves a single pass through the input string, which is the most efficient way to access all digits.
 
 ### 💻 Implementation
 ```py
