@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem requires finding all possible ways to partition a given string into four valid IP address segments, where each segment is between 0 and 255, and has no leading zeros unless it's "0". The string length is small.
+The core problem is to partition a given digit string into four segments, each representing a valid part of an IPv4 address (0-255, no leading zeros except for '0' itself).
 
 Approach:
-The solution uses a brute-force approach by iterating through all possible split points for the four segments. Three nested loops determine the split indices, creating four parts. Each part is then validated for correct format and range before concatenating them into a result IP string.
+The solution employs a brute-force approach. It uses three nested loops to try all possible positions for the three dots that would divide the input string into four segments. For each combination of divisions, it extracts the four segments, validates each segment using a helper function, and if all are valid, constructs the full IP address and adds it to the result list.
 
 Time Complexity:
 O(N)
-The three nested loops iterate a constant maximum number of times (3*3*3 = 27). Inside the loops, string slicing takes O(1) time (max length 3), and constructing the result IP string takes O(N) time.
+There are a constant number of nested loops (at most 3*3*3 = 27 iterations), and within each iteration, string slicing, validation, and concatenation take O(N) time for the final IP string construction, where N is the length of the input string. Given N is small (4 to 12), this is practically O(1).
 
 Space Complexity:
 O(N)
-The space is dominated by storing the list of result IP strings. Each valid IP string has a length of O(N), and the number of valid IP addresses for a given string is bounded by a small constant.
+The result list stores at most a constant number of IP addresses (max 27), each of length N+3. Temporary string slices also consume space proportional to segment length, which is constant. Therefore, the total space is O(N). Given N is small, this is practically O(1).
 
 Optimization Notes:
-This solution is practically optimal for the given constraints (input string length up to 12). The problem inherently requires checking combinations of splits, and the total number of such combinations is very small. The fixed number of loops combined with linear time string construction makes it efficient enough.
+The solution is optimal. Since an IPv4 address must have exactly four parts, and each part's length is highly constrained (1 to 3 digits), the number of ways to partition the string is very small and constant. A brute-force enumeration of these partitions is the most direct and efficient approach, requiring no further asymptotic optimization.
 
 ### 💻 Implementation
 ```py
@@ -62,23 +62,23 @@ class Solution:
 **Platform:** LeetCode
 
 Problem Insight:
-The problem asks for the minimum time to complete a target number of tasks, where each task type 'c' produces items at an accelerating rate (k*(k+1)/2) per unit of 'c'. This is a monotonic problem solvable by binary search on the answer (time).
+The solution binary searches for the minimum maximum production (items) allowed for any single source. For a given maximum production, it sums up the maximum "seconds of effort" each source can put in without exceeding that production, checking if this sum meets the target.
 
 Approach:
-The solution uses binary search on the possible time 'm'. For each `m`, a helper function `rec` determines if the total number of tasks completed is at least 'a'. `rec` iterates through all task types 'b', and for each type, a nested binary search in `pec` finds the maximum 'k' items produced within time 'm'.
+A global binary search determines the maximum number of items any single source can produce (let's call this value X). For a chosen X, an inner function iterates through all sources. For each source with a specific rate, another binary search calculates the maximum number of seconds it can run to produce at most X items. These maximum seconds from all sources are summed. If the total sum of seconds is sufficient (>= target 'a'), X might be achievable, so the binary search tries a smaller X; otherwise, X is too low.
 
 Time Complexity:
-O(log(M_max) * N * log(K_max))
-Justification: Outer binary search runs log(M_max) times (M_max is max possible time 1e9). Inside, `rec` loops N times (N is b.size()). Each loop calls `pec`, which performs a binary search log(K_max) times (K_max is max k value 1e6).
+O(log(MAX_X) * N * log(MAX_K))
+Outer binary search iterates log(MAX_X) times (MAX_X can be up to ~1e14). Inside, an O(N) loop (N is vector size) calls an inner binary search (pec) which takes log(MAX_K) time (MAX_K is ~1e6).
 
 Space Complexity:
-O(1)
-Justification: The solution uses a few constant-sized variables and does not allocate memory proportional to input size.
+O(N)
+The space is dominated by storing the input vector 'b'.
 
 Optimization Notes:
-The overall approach of binary search on the answer with a nested binary search for individual counts is optimal for this problem type.
-However, there's a potential overflow in the `pec` function: `((md*(md+1)/2)*i)` can exceed `LLONG_MAX` if `md*(md+1)/2` and `i` are both large. For example, if `md` is 1e6 and `i` is 1e9, the product can be 5e20, which overflows `long long`. This check should be rewritten as `md*(md+1)/2 <= m/i` to prevent overflow, assuming `i` is positive.
-There is also a syntax error `,,` after `ll cnt=0;` in the `rec` function that should be removed.
+The solution is optimal for the specific problem it appears to solve. However, the upper bound for the outer binary search (variable 'r' in minNumberOfSeconds) is set to 1e9, which is too small for the actual problem constraints where the answer can go up to ~1e14. This would cause incorrect results for larger test cases. If the problem meant "minimum global time T such that all sources run for T seconds and produce 'a' items", then the solution is overly complex; a simpler O(log(MAX_T) * N) approach would suffice, requiring no inner binary search.
+
+CODE:
 
 ### 💻 Implementation
 ```cpp
