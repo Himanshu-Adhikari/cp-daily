@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-This problem asks for the maximum time to burn all nodes in a tree starting from a target node. It is equivalent to finding the maximum distance from the target node to any other node in the tree.
+This problem asks for the maximum time required for "fire" to spread from a target node to all other nodes in a tree. This translates to finding the maximum distance from the target node to any other node in the tree.
 
 Approach:
-First, the binary tree is transformed into an undirected graph using an adjacency list. Then, a Breadth-First Search (BFS) is performed starting from the target node to simulate the burning process, level by level. Each level completed in the BFS represents one unit of time.
+First, the tree is converted into an undirected graph (adjacency list) where each node is connected to its parent and children. Then, a Breadth-First Search (BFS) is performed starting from the target node to find the longest path to any other node, which represents the minimum time.
 
 Time Complexity:
 O(N log N)
-The graph conversion and the BFS both involve iterating through all N nodes and N-1 edges. Operations on std::map (like insertion or access) take O(log N) time, contributing to the overall complexity.
+Building the adjacency list using 'map' involves N distinct node data values as keys, leading to O(N log N) for map insertions/accesses. BFS then takes O(N) time.
 
 Space Complexity:
 O(N)
-The solution uses a map for the adjacency list, a queue for BFS, and another map for visited nodes, all of which store information proportional to the number of nodes N. The recursion stack for graph conversion also uses O(N) in the worst case.
+The adjacency list 'm' stores O(N) edges and N keys. The 'vis' map stores O(N) entries, and the queue 'q' stores at most O(N) elements.
 
 Optimization Notes:
-The solution is not optimal in terms of time complexity. Using std::unordered_map instead of std::map for the adjacency list and visited set would reduce the average time complexity from O(N log N) to O(N), which is typically the optimal time for graph traversal problems. The space complexity O(N) is generally optimal for this type of problem.
+The approach is optimal. However, using 'map' for the adjacency list and visited set introduces a logarithmic factor. If node data values are within a constrained integer range, an array of vectors could be used instead of 'map' for O(1) average access, making the overall time complexity O(N). An 'unordered_map' would also achieve O(N) average time complexity.
 
 ### 💻 Implementation
 ```cpp
@@ -69,21 +69,21 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-The problem involves finding the largest submatrix of ones given the ability to rearrange matrix columns. This can be solved by transforming the problem into finding the largest rectangle in a histogram for each row.
+The problem leverages column rearrangements to form the largest submatrix of ones. The key is to transform the matrix into heights of continuous ones in columns.
 
 Approach:
-First, compute the height of consecutive ones for each cell as if it were the bottom of a column. Then, for each row, sort these column heights in descending order to group tall columns together. Finally, iterate through each sorted row, calculating the area formed by current height and available width (number of columns to its left including itself) and update the maximum area.
+The solution first transforms the matrix cells into the height of continuous '1's ending at that cell. Then, for each row, it sorts these heights in descending order. Finally, it iterates through each sorted row, calculating potential rectangle areas by multiplying the current height by its effective width (index + 1) and updates the maximum result.
 
 Time Complexity:
-O(m * n log n)
-The time is dominated by sorting each of the m rows, where each row has n elements, taking O(n log n) per row.
+O(m*n log n)
+O(m*n) for preprocessing column heights, O(m*n log n) for sorting m rows of length n, and O(m*n) for final calculation.
 
 Space Complexity:
 O(1)
-The solution modifies the input matrix in-place without allocating significant additional data structures.
+The solution modifies the input matrix in-place and uses constant additional auxiliary space.
 
 Optimization Notes:
-The solution is optimal in terms of time complexity for this approach, as sorting rows is the bottleneck and seems necessary to handle column rearrangements effectively. The space complexity is also optimal as it uses O(1) auxiliary space.
+The solution is optimal for this approach. The preprocessing and area calculation steps are linear O(m*n), while the sorting step dominates at O(m*n log n). Given that columns can be rearranged, sorting each row's derived heights is a necessary step to efficiently find the widest possible rectangle for each available height.
 
 ### 💻 Implementation
 ```cpp
