@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem asks for the minimum total moves to redistribute candies in a binary tree so each node eventually holds one candy. Moves occur between adjacent nodes.
+The problem asks for the minimum number of moves to ensure each node in a tree has exactly one candy, where a move is transferring one candy between adjacent nodes. The total candy in the tree must equal the number of nodes.
 
 Approach:
-The solution uses a post-order traversal (DFS). Each node recursively determines the net candy flow (excess or deficit) for its subtree, contributing to the total moves at each step.
+The solution employs a depth-first search (DFS) post-order traversal. For each node, it recursively calculates the net candy surplus or deficit of its subtrees. The absolute value of these surpluses/deficits, representing candies moved across edges, is added to a global total.
 
 Time Complexity:
 O(N)
-Every node in the tree is visited exactly once during the depth-first search traversal.
+Each node in the tree is visited exactly once during the depth-first search traversal.
 
 Space Complexity:
-O(H) where H is the height of the tree.
-This accounts for the maximum depth of the recursion stack, which can be O(N) in the worst case for a skewed tree.
+O(H) where H is the height of the tree
+The space is determined by the maximum depth of the recursion stack, which can be up to N for a skewed tree.
 
 Optimization Notes:
-The solution is optimal. It correctly computes the minimum moves by summing the absolute net candy flow across each edge. No asymptotic time or space improvements are generally possible for this problem.
+Optimal. The solution correctly calculates the minimum moves by summing the absolute net candy transfers across each edge. Each node and edge is processed once, achieving optimal O(N) time complexity.
 
 ### 💻 Implementation
 ```cpp
@@ -49,21 +49,21 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-The problem counts submatrices anchored at (0,0) with sums less than or equal to k. It leverages a standard 2D prefix sum technique.
+The solution counts submatrices whose top-left corner is (0,0) and whose sum is less than or equal to k. It iterates through all possible bottom-right corners (i,j).
 
 Approach:
-The solution constructs a 2D prefix sum array where each element pr[r][c] stores the sum of the submatrix from (0,0) to (r-1,c-1). It iterates through all possible bottom-right corners (i,j), calculates the sum of the submatrix (0,0) to (i,j) using the prefix sum formula, and increments a counter if the sum is within the k limit.
+A 2D prefix sum array is used to compute the sum of the submatrix from (0,0) to (i,j) in constant time for each cell. For each (i,j), the calculated prefix sum is checked against k, and if it satisfies the condition, it's counted.
 
 Time Complexity:
-O(m*n)
-Two nested loops iterate through all m rows and n columns of the grid, performing constant time calculations.
+O(m * n)
+The code iterates through all m rows and n columns of the grid exactly once.
 
 Space Complexity:
-O(m*n)
-A 2D prefix sum array of size (m+1)x(n+1) is used to store intermediate sums.
+O(m * n)
+A 2D prefix sum array of size (m+1) x (n+1) is allocated.
 
 Optimization Notes:
-The solution is optimal. Calculating the sum for each (0,0) to (i,j) submatrix takes O(1) time after the prefix sum array is built. Since all m*n such submatrices must be considered, O(m*n) time and space are the theoretical minimums.
+This solution is optimal for counting submatrices starting at (0,0) with sum <= k. If the problem requires counting *any* submatrix (arbitrary top-left and bottom-right corners) with sum <= k, this solution is incorrect and not optimal as it only considers submatrices originating from (0,0).
 
 ### 💻 Implementation
 ```cpp
