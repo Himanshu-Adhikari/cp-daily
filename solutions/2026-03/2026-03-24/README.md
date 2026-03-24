@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-This problem asks to determine if a valid course schedule exists given prerequisites, which translates to detecting cycles in a directed graph.
+Determining if a set of courses with prerequisites can be completed is equivalent to detecting cycles in a directed graph.
 
 Approach:
-The solution implements Kahn's algorithm for topological sort. It tracks indegrees of courses and uses a queue to process courses with no outstanding prerequisites. If all courses can be processed, no cycle exists.
+The solution uses Kahn's algorithm (topological sort). It computes the in-degree of each course and initializes a queue with courses having zero in-degrees. It then iteratively processes courses from the queue, decrementing the in-degree of their dependent courses. If a dependent course's in-degree drops to zero, it's added to the queue. If all courses are eventually processed this way, no cycle exists, and all courses can be finished.
 
 Time Complexity:
-O(V + E)
-Where V is the number of courses (n) and E is the number of prerequisites. Each node and edge is processed a constant number of times.
+O(N + P)
+Each course and prerequisite is processed a constant number of times for building the graph and during the BFS traversal.
 
 Space Complexity:
-O(V + E)
-Stores indegrees (V), the queue (V), and the adjacency list (V + E).
+O(N + P)
+Storing in-degrees (vector 'a'), adjacency list (map 'm'), and the queue 'q' takes space proportional to the number of courses and prerequisites.
 
 Optimization Notes:
-The solution is optimal in terms of Big-O complexity for this problem. Using a vector of vectors for the adjacency list instead of a map could slightly improve constant factors.
+The solution is optimal in terms of asymptotic time complexity, O(N+P), as it correctly implements Kahn's algorithm. A minor optimization could be to use a vector of vectors for the adjacency list instead of a map to potentially improve constant factors for graph construction.
 
 ### 💻 Implementation
 ```cpp
@@ -58,21 +58,21 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-The problem asks for a matrix where each cell (i,j) contains the product of all other elements in the grid, modulo 12345.
+The problem asks to calculate the product of all elements in a 2D grid except for the current cell's value, for every cell, with all operations performed modulo a given constant. This is a 2D extension of the classic "product of array except self" problem.
 
 Approach:
-The grid is flattened into a 1D array. Prefix products and suffix products are computed for this 1D array, all modulo 12345. For each element at index k in the 1D array, its corresponding result is the product of prefix product up to k-1 and suffix product from k+1, modulo 12345. These results are then mapped back to the 2D output matrix.
+The solution first flattens the 2D grid into a 1D vector, applying the modulo operation to each element. It then computes prefix products and suffix products for this 1D vector. For each element at index i, the product of all other elements is found by multiplying the prefix product up to i-1 and the suffix product from i+1. These 1D results are then mapped back to form the 2D output matrix, ensuring all intermediate and final products are taken modulo 12345.
 
 Time Complexity:
-O(rows * cols)
-Flattening, prefix products, suffix products, and mapping back all take linear time with respect to the total number of elements.
+O(R*C)
+Justification: The flattening, prefix product calculation, suffix product calculation, and final result matrix construction each iterate through all R*C elements once.
 
 Space Complexity:
-O(rows * cols)
-Auxiliary arrays 't', 'pre', and 'suf' are created, each storing a number of elements proportional to the total grid size.
+O(R*C)
+Justification: Auxiliary 1D vectors 't', 'pre', and 'suf' are used, each storing R*C elements. The result matrix 'res' also takes O(R*C) space.
 
 Optimization Notes:
-The solution is optimal in terms of time complexity as every element in the input grid must be processed. It is also optimal in space complexity because auxiliary arrays are a standard and efficient way to store intermediate prefix/suffix products without re-calculating for each element, which would lead to a higher time complexity.
+The solution is optimal. It requires processing each element a constant number of times and uses auxiliary space proportional to the input size for storing prefix and suffix products, which is standard for this type of problem. Achieving O(1) auxiliary space (beyond the output matrix) is possible for a 1D array, but typically involves more complex logic for the 2D case or if the input array cannot be modified.
 
 ### 💻 Implementation
 ```cpp
