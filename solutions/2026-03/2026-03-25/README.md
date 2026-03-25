@@ -9,21 +9,19 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-Finding the minimum height roots in a tree is equivalent to finding its center(s). This can be achieved by iteratively removing all current leaf nodes from the tree.
+The problem asks to find all nodes in a tree such that if any of these nodes are chosen as the root, the resulting tree has the minimum possible height. These are the centers of the tree.
 
 Approach:
-The solution initializes a graph and node degrees. It then adds all initial leaf nodes (degree 1) to a queue. It performs a BFS-like process, iteratively removing layers of leaves. For each removed leaf, it decrements its neighbors' degrees, adding any newly formed leaves to the queue. The nodes remaining in the final iteration are the MHT roots.
+The solution uses a leaf-shaving algorithm. It iteratively removes all current leaf nodes from the tree layer by layer, decrementing the degrees of their neighbors, and adding new leaf nodes to a queue until only the tree's true center(s) remain. The final nodes in the queue are the minimum height roots.
 
 Time Complexity:
-O(V + E)
-Building the graph and the BFS-like traversal each visit every node and edge at most once.
+O(V+E). Each node and edge is processed a constant number of times during graph construction and the iterative leaf removal process.
 
 Space Complexity:
-O(V + E)
-The adjacency list stores O(V+E) connections. The degree array and queue take O(V) space.
+O(V+E). The adjacency list stores the graph, and the degree array and queue store information proportional to the number of nodes.
 
 Optimization Notes:
-The solution is optimal. For a tree, E = V-1, so the complexity is effectively O(V). It processes each node and edge a constant number of times, which is the best possible for this problem.
+This solution is optimal. It correctly finds the minimum height roots (tree centers) in linear time, which is the best possible complexity as every node and edge might need to be visited.
 
 ### 💻 Implementation
 ```py
@@ -61,21 +59,21 @@ class Solution:
 **Platform:** LeetCode
 
 Problem Insight:
-The problem asks if a grid can be partitioned into two non-empty parts with equal sums, either by a single horizontal cut or a single vertical cut.
+The problem asks to determine if a grid can be partitioned into two sub-grids with equal sums, either horizontally (by splitting rows) or vertically (by splitting columns), ensuring both parts are non-empty. This implies the total sum must be even and non-zero.
 
 Approach:
-First, calculate the total sum of all elements in the grid. Then, iterate through all possible horizontal cuts, checking if the sum of elements above the cut equals the sum of elements below. If no horizontal cut works, iterate through all possible vertical cuts, checking if the sum of elements to the left of the cut equals the sum of elements to the right. Return True if any such valid partition is found, otherwise False.
+The solution first computes the total sum of the grid. It then iterates through all possible horizontal split points, accumulating the sum of rows from the top and checking if this accumulated sum equals the remaining sum. If no horizontal split is found, it re-initializes and iterates through all possible vertical split points, accumulating column sums from the left and checking for equality.
 
 Time Complexity:
 O(M*N)
-The solution iterates through all grid cells a constant number of times to calculate sums for both horizontal and vertical partitions.
+The solution iterates through all grid cells multiple times: once for the initial total sum, once for horizontal partitions (M rows, N sum per row), and once for vertical partitions (N columns, M sum per column).
 
 Space Complexity:
 O(1)
-The solution uses a fixed number of variables regardless of the input grid's size.
+Only a few constant-size variables are used to store sums and dimensions, independent of the grid's size.
 
 Optimization Notes:
-The solution is optimal in terms of time complexity O(M*N) as every element must be processed. An optimization could be to check if the total sum of the grid is odd at the beginning; if so, an equal partition is impossible, allowing an early return.
+The solution is optimal in terms of time and space complexity, as every cell must be visited. A minor improvement would be to calculate the total sum only once at the beginning. Additionally, checking if the total sum is odd allows for an early exit. Using a target sum (total sum / 2) can make the sum comparison logic slightly cleaner.
 
 ### 💻 Implementation
 ```py
