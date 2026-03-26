@@ -9,21 +9,51 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-This problem asks to find the number of distinct shortest paths from a source node to a destination node in a weighted undirected graph with non-negative edge weights. It's a variation of the shortest path problem.
+This solution counts the number of shortest paths from a source node (0) to a target node (V-1) in a weighted, undirected graph with non-negative edge weights. It leverages a modified shortest path algorithm.
 
 Approach:
-The solution extends Dijkstra's algorithm. It maintains both the shortest distance to each node (dist array) and the count of shortest paths to each node (ways array). When a shorter path to a node is found, its distance and ways are updated. When an equally short path is found, the ways count is incremented by the ways from the current node. Modulo arithmetic is applied to prevent overflow.
+The solution adapts Dijkstra's algorithm by simultaneously tracking both the shortest distance to each node and the number of distinct shortest paths to reach that distance. When a shorter path is found, the distance and path count are updated. When an equally short path is found, its path count is added to the existing count.
 
 Time Complexity:
-O((V+E) log V)
-This is due to Dijkstra's algorithm using a min-priority queue, where V is the number of vertices and E is the number of edges. Each vertex is extracted once, and each edge relaxation involves a potential priority queue operation.
+O(E log V)
+This is due to Dijkstra's algorithm using a binary min-heap priority queue, where E is the number of edges and V is the number of vertices.
 
 Space Complexity:
 O(V + E)
-This is for storing the adjacency list representation of the graph, the distance array, the ways array, and the priority queue.
+This accounts for the adjacency list storing the graph (V+E), and the distance, ways, and priority queue data structures (V each).
 
 Optimization Notes:
-The solution is optimal. For graphs with non-negative edge weights, Dijkstra's algorithm is the most efficient known single-source shortest path algorithm, and this solution correctly adapts it to count paths without increasing its asymptotic complexity. The space complexity is also optimal as it requires storing the graph and auxiliary information.
+The solution is optimal. Dijkstra's algorithm is the standard and most efficient approach for finding shortest paths in graphs with non-negative edge weights, and its modification for path counting does not asymptotically increase its complexity.
+
+CODE:
+class Solution:
+    def countPaths(self, V, edges):
+        # code here
+        MOD = 10**9 + 7
+        
+        adj = [[] for _ in range(V)]
+        for u, v, w in edges:
+            adj[u].append((v, w))
+            adj[v].append((u, w))
+        
+        dist = [float('inf')] * V
+        ways = [0] * V
+        dist[0] = 0
+        ways[0] = 1
+        pq = [(0, 0)]
+        while pq:
+            d, u = heapq.heappop(pq)
+            if d > dist[u]:
+                continue
+            for v, w in adj[u]:
+                if dist[v] > dist[u] + w:
+                    dist[v] = dist[u] + w
+                    ways[v] = ways[u]
+                    heapq.heappush(pq, (dist[v], v))
+                elif dist[v] == dist[u] + w:
+                    ways[v] = (ways[v] + ways[u]) % MOD
+        
+        return ways[V - 1] % MOD
 
 ### 💻 Implementation
 ```py
@@ -63,21 +93,19 @@ class Solution:
 **Platform:** LeetCode
 
 Problem Insight:
-The problem asks if a 2D grid can be partitioned into two contiguous subgrids (horizontally or vertically) such that their sums are equal. An additional condition allows for balancing unequal sums by changing a single element in the larger-sum subgrid to zero, with specific rules on which element can be changed based on the subgrid dimensions.
+The problem asks to partition a grid either horizontally or vertically into two subgrids. It seeks to determine if these subgrids can have equal sums, or if their sums can be made equal by moving a single element from the larger subgrid to the smaller one.
 
 Approach:
-The solution first calculates the total sum of the grid. It then iterates through all possible horizontal cut points, forming a top and bottom subgrid. For each partition, it checks if their sums are equal. If not, it identifies the difference and the larger-sum subgrid. It then applies specific rules to check if an element within that subgrid can be changed to zero to balance the sums. The entire process is repeated after transposing the grid to handle vertical partitions.
+The solution iterates through all possible horizontal partition lines. For each line, it computes the sum of elements in the top and bottom subgrids. It checks if sums are equal or if a single element from the larger subgrid can be moved to balance the sums. This process is then repeated for vertical partitions by transposing the grid.
 
-Time Complexity:
-O(M*N)
-The initial sum and frequency map construction take O(M*N). The loop iterates M times, and inside, each column's elements are processed (N operations), leading to O(M*N). Transposing the grid also takes O(M*N).
+Time Complexity: O(MN)
+The grid is traversed twice: once for initial sum/frequency calculations and then iterating through M-1 horizontal cuts, each involving iterating N columns. Transposing and the second pass also take O(MN).
 
-Space Complexity:
-O(M*N)
-Frequency maps (bot_freq, top_freq) can store up to M*N distinct elements in the worst case. The transposed grid created by list(zip(*grid)) also takes O(M*N) space.
+Space Complexity: O(MN)
+Two frequency maps (defaultdict) are used, which in the worst case could store up to MN distinct elements, requiring O(MN) space.
 
 Optimization Notes:
-The solution is optimal in terms of time complexity, as it must examine all elements and all possible contiguous cuts (O(M*N)). The space complexity for frequency maps is also optimal given the requirement to track element counts for potential modifications. The specific conditions for which elements can be modified (e.g., only boundary elements for single-row/column subgrids, any element otherwise) are unique to this problem's implied rules; assuming these rules are correct, the code implements them efficiently.
+The core logic for the "one element swap" condition is incorrect; it checks for an element equal to the total difference instead of half the difference. Fixing this would require checking for diff / 2 (and ensuring diff is even). With this correction, the solution would be optimal in time and space complexity as it explores all required partitions and elements.
 
 ### 💻 Implementation
 ```py
