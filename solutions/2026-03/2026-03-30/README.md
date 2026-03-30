@@ -9,23 +9,19 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem asks for the minimum cost to connect all houses, which is a classic Minimum Spanning Tree (MST) problem. Edge weights are defined by the Manhattan distance between house coordinates.
+The problem asks for the minimum cost to connect all houses, which is a classic Minimum Spanning Tree (MST) problem where edge costs are Manhattan distances.
 
 Approach:
-The solution generates all possible pairwise connections (edges) between houses along with their Manhattan distances. These edges are then sorted by cost. Finally, Kruskal's algorithm, implemented with a Disjoint Set Union (DSU) data structure, is used to build the MST by iteratively adding the cheapest available edge that connects two previously disconnected components.
+The solution applies Kruskal's algorithm. It first generates all possible edges between houses with Manhattan distance as cost, then sorts these edges by cost. A Disjoint Set Union (DSU) data structure is used to efficiently add edges to the MST if they connect two previously unconnected components, accumulating the total cost until n-1 edges are added.
 
 Time Complexity:
-O(N^2 log N)
-Generating all N*(N-1)/2 edges takes O(N^2). Sorting these O(N^2) edges takes O(N^2 log(N^2)) which simplifies to O(N^2 log N). Kruskal's algorithm with DSU runs in effectively O(E alpha(N)) time, where E is the number of edges (O(N^2)) and alpha is the inverse Ackermann function, making it dominated by the sorting step.
+O(N^2 log N) because generating all N^2 edges takes O(N^2), and sorting them dominates with O(N^2 log(N^2)) which simplifies to O(N^2 log N). The DSU operations are near-constant time.
 
 Space Complexity:
-O(N^2)
-Storing all N*(N-1)/2 edges requires O(N^2) space. The parent array for DSU requires O(N) space.
+O(N^2) because all N^2 possible edges are stored explicitly in a list. The parent array for DSU takes O(N) space.
 
 Optimization Notes:
-The solution is an optimal implementation of Kruskal's algorithm on a complete graph with N nodes. However, for geometric MST problems with Manhattan distance, it's possible to avoid generating all O(N^2) edges. Advanced techniques like a plane sweep algorithm can be used to identify only O(N log N) "relevant" edges that might be part of the MST. Applying Kruskal's on this sparse graph would reduce the total time complexity to O(N log N).
-
-CODE:
+The solution is optimal for a general graph where all N^2 edges must be considered. For a geometric problem like this, if N were extremely large (e.g., 10^5 or more), specialized geometric MST algorithms or data structures (like a Delaunay triangulation or K-d tree to find nearest neighbors) could achieve faster times (e.g., O(N log N) or O(N log^2 N)) by avoiding explicit construction of all N^2 edges. However, for typical competitive programming constraints where N is up to a few thousand, O(N^2 log N) is a standard and efficient approach.
 
 ### 💻 Implementation
 ```py
@@ -76,19 +72,21 @@ class Solution:
 **Platform:** LeetCode
 
 Problem Insight:
-The problem checks if two strings are equivalent by allowing character swaps only within even positions and only within odd positions. This means the multisets of characters for even and odd positions must be identical for both strings.
+Characters at even indices can only be swapped with other even-indexed characters, and similarly for odd indices. This implies independent multisets for even and odd positions.
 
 Approach:
-The solution separates characters from each string into two groups: those at even indices and those at odd indices. It then sorts these four resultant groups and compares the sorted lists of characters for corresponding even and odd groups.
+The solution separates characters from s1 and s2 into two distinct groups based on their index parity (even or odd). It then compares the character multisets for corresponding parities by sorting the separated character strings and checking for equality.
 
 Time Complexity:
-O(N log N). Building substrings is O(N), and sorting substrings of length N/2 takes O(N log N) for each of the four sorts.
+O(N^2)
+String concatenations in a loop take O(N^2) time, dominating the O(N log N) time for sorting the resulting strings.
 
 Space Complexity:
-O(N). Four new strings are created, each potentially storing N/2 characters.
+O(N)
+Four new strings are created to store characters from s1 and s2, each holding roughly N/2 characters. Temporary space for sorting is also O(N).
 
 Optimization Notes:
-It is not optimal. Time can be improved to O(N) and space to O(1) by using frequency arrays (e.g., size 26 for lowercase letters) to count characters at even and odd positions instead of building and sorting substrings.
+The solution is not optimal. It can be improved to O(N) time complexity by using frequency arrays (or character counts) instead of building and sorting new strings. This eliminates the O(N^2) concatenation cost and the O(N log N) sorting cost, replacing them with O(N) for counting and O(1) for comparing counts.
 
 ### 💻 Implementation
 ```py
