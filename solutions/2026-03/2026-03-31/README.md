@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-This problem aims to find the maximum profit achievable from buying and selling stocks an unlimited number of times, with a fixed transaction fee 'k' applied to each buy operation. It is a dynamic programming problem tracking states of holding or not holding a stock.
+This problem aims to find the maximum profit from buying and selling a stock multiple times, with a fixed transaction fee applied per purchase. It is a classic dynamic programming problem tracking current possession of a stock.
 
 Approach:
-The solution uses dynamic programming with a bottom-up approach, iterating from the last day backwards. It calculates the maximum profit from day 'i' onwards for two states: holding a stock (dp[i][0]) and not holding a stock (dp[i][1]). The transaction fee 'k' is deducted when a stock is effectively bought.
+The solution uses a bottom-up dynamic programming approach. It defines two states for each day: dp[i][1] represents the maximum profit achievable from day i onwards if currently holding a stock, and dp[i][0] represents the maximum profit if not holding a stock. The loop iterates from the last day backwards, calculating these states by considering options to buy, sell, or do nothing.
 
 Time Complexity:
-O(N)
-The solution iterates through the array of prices once, performing constant time operations for each day.
+O(N) where N is the number of days (arr.size()).
+The solution iterates through the array once in reverse, performing constant time operations in each step.
 
 Space Complexity:
-O(N)
-A 2D DP table of size (N+1)x2 is used to store intermediate results, where N is the number of days.
+O(N) where N is the number of days.
+A 2D DP table of size (N+1) x 2 is used to store the intermediate maximum profits for each day and state.
 
 Optimization Notes:
-The current space complexity is O(N). This can be optimized to O(1) because the current day's DP values only depend on the next day's values. We only need to store two variables for the 'holding' and 'not holding' states from the previous iteration.
+The solution is optimal in terms of time complexity, as all prices must be considered. Space complexity can be optimized to O(1) by noticing that the current day's DP values only depend on the next day's values. Only two variables (for dp_hold and dp_cash from the previous day) are needed to calculate the current day's values.
 
 CODE:
 class Solution {
@@ -59,19 +59,21 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-This problem aims to reconstruct a string of length N+M-1 based on a pattern S and a target string T, where S indicates required (T) or forbidden (F) occurrences of T as a substring.
+Reconstruct a target string of length len(s) + len(t) - 1 by applying 'T' (must match) and 'F' (must not match) constraints from a pattern string 's' with respect to a fixed substring 't'. Conflicts or unsolvable constraints yield an empty string.
 
 Approach:
-The solution first processes 'T' constraints to fix characters in the result string and detect immediate conflicts. Then, it addresses 'F' constraints by ensuring no forbidden substring matches T; if a match occurs, it modifies a placeholder character to break the match.
+Initialize the result with wildcards. First, apply all 'T' constraints, filling characters from 't' into the result string, and return an empty string if conflicts arise. Then, process 'F' constraints: if a segment would match 't', modify one of its original wildcard positions to break the match, using 'a' and 'b' as default fill characters.
 
-Time Complexity: O(N * M)
-Justification: Both the 'T' and 'F' constraint processing involve nested loops that iterate up to N times for the outer loop and M times for the inner loop.
+Time Complexity:
+O(len(s) * len(t))
+Each of the len(s) constraints in string 's' potentially requires iterating through len(t) characters of 't' for checks and assignments.
 
-Space Complexity: O(N + M)
-Justification: Two character arrays, 'ans' and 'old_ans', are used, each storing up to N + M - 1 characters.
+Space Complexity:
+O(len(s) + len(t))
+The space is dominated by storing the result string and its temporary copy, each of length len(s) + len(t) - 1.
 
 Optimization Notes:
-The solution is largely optimal for this problem type. The O(N*M) complexity is inherent in needing to check every possible alignment of T within the result string for both 'T' and 'F' constraints. Further optimization using advanced string algorithms is complex due to the mutable nature of the '?' characters for 'F' constraints.
+The solution is optimal. The problem's nature requires processing each of the len(s) potential pattern placements, each involving len(t) characters, which inherently leads to an O(len(s) * len(t)) time complexity lower bound. Space usage is minimal, storing only the necessary result string.
 
 ### 💻 Implementation
 ```py
