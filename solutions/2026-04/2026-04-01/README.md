@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem asks to count binary strings of length N that do not contain consecutive 1s. This specific counting problem follows a recurrence relation similar to the Fibonacci sequence.
+The problem asks to count binary strings of length N that do not contain consecutive '1's. This specific constraint leads to a Fibonacci-like recurrence relation.
 
 Approach:
-The solution uses an iterative dynamic programming approach. It recognizes that the number of valid strings for length N can be derived from the counts for lengths N-1 and N-2, effectively computing the N-th term of a modified Fibonacci sequence with appropriate base cases.
+The solution employs an iterative dynamic programming approach. It calculates the count for length N by utilizing the counts for lengths N-1 and N-2, mirroring the Fibonacci sequence where the current term is the sum of the two preceding terms.
 
 Time Complexity:
 O(N)
-The solution iterates N-2 times in the worst case, performing constant time operations in each step.
+The loop iterates N-2 times to compute the N-th term based on previous terms.
 
 Space Complexity:
 O(1)
-Only a constant number of variables are used to store the previous two sequence values, independent of N.
+The solution uses only a constant number of variables (a, b) to store previous counts.
 
 Optimization Notes:
-It is optimal. The solution calculates the N-th term of the recurrence relation iteratively in linear time and constant space, which is the most efficient method for typical N without resorting to matrix exponentiation (which has higher constant factors).
+The solution is optimal in both time and space complexity for an iterative approach. It directly implements the linear recurrence relation in linear time and constant space. For extremely large N, matrix exponentiation could compute the N-th term in O(log N) time, but for typical competitive programming constraints where N allows an O(N) solution, this iterative method is efficient and often preferred due to lower constant factors.
 
 ### 💻 Implementation
 ```py
@@ -45,21 +45,21 @@ class Solution:
 **Platform:** LeetCode
 
 Problem Insight:
-Collisions only occur between right-moving and left-moving robots. Processing robots in order of their initial positions is crucial to correctly simulate interactions.
+This problem simulates robot collisions on a 1D line where health determines survival. The key is to process robots by their initial position, handling collisions between robots moving towards each other.
 
 Approach:
-Robots are processed in increasing order of their initial positions. A stack tracks right-moving robots awaiting potential collisions. When a left-moving robot is encountered, it battles robots on the stack until it is destroyed or the stack is empty.
+Robots are first sorted by their starting positions. A stack tracks robots moving right. When a robot moving left is encountered, it repeatedly collides with the top robot on the stack (moving right) until one or both are destroyed or the stack is empty.
 
 Time Complexity:
 O(N log N)
-Sorting the robot indices by position takes O(N log N), and the subsequent stack-based simulation processes each robot and collision in amortized O(N) time.
+Sorting the robot indices by position takes O(N log N). The subsequent loop and stack operations are O(N) as each robot is pushed and popped at most once.
 
 Space Complexity:
 O(N)
-An auxiliary vector stores sorted indices, the stack stores active robots, and the result vector stores surviving robots, all requiring O(N) space.
+An auxiliary vector is used to store sorted indices, and the stack can store up to N robot indices.
 
 Optimization Notes:
-Optimal. Sorting by position is a necessary step, setting an O(N log N) lower bound. The stack-based simulation efficiently handles collisions in O(N) amortized time, making the overall approach optimal.
+The solution is optimal. Sorting by position is a prerequisite, and the stack-based simulation processes collisions efficiently in linear time after sorting. No further asymptotic improvements are possible.
 
 ### 💻 Implementation
 ```cpp
