@@ -9,21 +9,19 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-This problem is a classic dynamic programming task that asks for the number of ways to paint n fences with k colors such that no more than two adjacent fences have the same color. It's often referred to as the Paint Fence problem.
+This problem is a dynamic programming task focused on counting valid colorings of a fence. The core constraint is preventing three or more consecutive posts from having the same color.
 
 Approach:
-The solution uses dynamic programming by tracking two states for the current fence: the number of ways it has the same color as the previous fence, and the number of ways it has a different color. It iteratively calculates these counts for each fence from 2 to n, using modulo arithmetic to prevent overflow.
+The solution uses dynamic programming with O(1) space, tracking two states for each post: the number of ways the current post has the same color as the previous one, and the number of ways it has a different color. These states are iteratively updated from post 2 to N.
 
 Time Complexity:
-O(N)
-The solution iterates through the fences from 3 to N once, performing constant time operations in each step.
+O(N) because the solution iterates through the posts from 3 to N once.
 
 Space Complexity:
-O(1)
-It uses a fixed number of variables to store the counts for the previous step, independent of N or K.
+O(1) because it only uses a few constant-sized variables to store the current and previous DP states.
 
 Optimization Notes:
-The solution is optimal. It achieves O(N) time complexity, which is generally required as each fence needs to be considered, and O(1) space complexity, which is the best possible by only storing the necessary previous states.
+The solution is optimal. It solves the problem in linear time using constant extra space, which is the most efficient possible complexity for this problem.
 
 ### 💻 Implementation
 ```py
@@ -52,19 +50,21 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-This problem asks to find the maximum sum path from (0,0) to (n-1,m-1) in a grid, moving only down or right. We have a limited number of 'powers' (initially 2) that can be used to negate the value of a negative coin encountered.
+This problem aims to find the maximum sum along a path from the top-left to the bottom-right of a grid, with a limited number of 'powers' to effectively nullify negative coin values.
 
 Approach:
-The solution uses 3-dimensional dynamic programming with memoization. The state is defined by (current row, current column, remaining powers). For each state, the function calculates the maximum value by considering moving down or right. If the current coin is negative and powers are available, it also considers using a power to skip the negative coin's penalty, which reduces the available powers.
+The solution uses recursive dynamic programming with memoization. The state is defined by the current grid coordinates (i, j) and the remaining power (pw). For each cell, it recursively calculates the maximum sum by moving down or right. If a negative coin is encountered and power is available, it considers two options: collecting the coin as is, or using a power to treat its value as zero.
 
 Time Complexity:
-O(N * M * K) where N is rows, M is columns, and K is max powers (3 in this case). Each state (i, j, pw) is computed once, and each computation takes constant time.
+O(N * M)
+There are N * M cells and 3 possible power states (0, 1, 2), creating N * M * 3 unique DP states. Each state computation involves constant time operations.
 
 Space Complexity:
-O(N * M * K) for storing the DP table. The table stores results for all possible (row, col, power) states.
+O(N * M)
+The DP table requires O(N * M * 3) space to store computed results. The recursion stack depth is at most O(N + M), which is dominated by the DP table size.
 
 Optimization Notes:
-The solution is optimal in terms of asymptotic time and space complexity for this problem. It explores all necessary states to find the maximum path sum. Converting the top-down (memoized recursion) approach to a bottom-up (iterative) DP might offer minor constant factor performance improvements by avoiding recursion overhead, but would not change the Big-O complexity.
+The time and space complexity are optimal for this problem type. However, there is a logical flaw in the calculation for using a power on a negative coin. When a power is used, the current coin's value should be treated as 0 for that specific path branch. The current code incorrectly includes the negative coin's value in one path calculation and then compares it against a future path sum that should have had 0 added for the current cell. The two options (collecting negative coin vs. using power to make it 0) need to be formed correctly before taking their maximum.
 
 ### 💻 Implementation
 ```py
