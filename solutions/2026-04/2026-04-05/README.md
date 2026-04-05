@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-This problem aims to find the total number of ways to assign plus or minus signs to each element in an array such that the sum of the signed elements equals a given target.
+This solution addresses the classic "Target Sum" problem, aiming to count the number of ways to assign plus or minus signs to array elements such that their sum equals a specific target value.
 
 Approach:
-The solution uses a recursive approach with memoization (dynamic programming). It explores two options for each element: adding the element to the current sum or subtracting it. The DP state is defined by (current index, current accumulated sum) to store and retrieve previously computed results.
+It uses a top-down dynamic programming approach with memoization. The recursive function explores all possible combinations by either adding or subtracting each element, and stores the results for (index, current sum) states to avoid redundant computations.
 
 Time Complexity:
-O(N * S)
-N is the length of the array, and S (2001 in the code) is the maximum possible range of the sum values. Each state is computed in O(1) time.
+O(N * S_max)
+Where N is the length of the array and S_max is the maximum possible range of sums (implicitly 2001 in the code, representing the maximum shifted sum). Each state is computed once in O(1).
 
 Space Complexity:
-O(N * S)
-This is for the DP table of size (N+1) x 2001. Additional space for the recursion stack is O(N).
+O(N * S_max)
+This is due to the memoization table (dp array) which stores results for N array indices and S_max possible sum values, plus O(N) for the recursion stack depth.
 
 Optimization Notes:
-The dynamic programming approach is optimal for this problem. However, the current implementation has a critical flaw as it uses 'sm' directly as an array index, which will fail if 'sm' can be negative. To correctly handle the full range of possible sums (including negative values), a sum offset should be applied to map 'sm' to a non-negative index in the DP table.
+The solution is optimal in terms of its pseudo-polynomial time complexity for this problem. However, the current code implicitly assumes 'sm' (the sum) will always be non-negative and within [0, 2000] when used as an index. For a general "Target Sum" problem where intermediate sums can be negative, 'sm' needs to be explicitly shifted by an offset (e.g., sum(abs(arr))) to map to valid non-negative indices. The space complexity could be optimized to O(S_max) using an iterative bottom-up DP approach that only stores the results for the current and previous rows.
 
 ### 💻 Implementation
 ```py
@@ -44,19 +44,21 @@ class Solution:
 **Platform:** LeetCode
 
 Problem Insight:
-To return to the starting point, the total displacement in both the horizontal and vertical directions must be zero.
+The problem asks to determine if a robot, starting at the origin, returns to the origin after performing a sequence of directional moves. This means the net displacement along both axes must be zero.
 
 Approach:
-Initialize two counters, one for vertical displacement and one for horizontal displacement, to zero. Iterate through the input string, incrementing or decrementing the appropriate counter for each move. Finally, return true if both counters are zero, indicating no net displacement.
+Initialize two variables, representing the robot's x and y coordinates, to zero. Iterate through the input string of moves. For each 'U' or 'D' move, adjust the y-coordinate, and for each 'L' or 'R' move, adjust the x-coordinate. Finally, return true if both x and y coordinates are zero, indicating the robot has returned to the start.
 
 Time Complexity:
-O(N) where N is the length of the moves string. The solution iterates through the string once to process all moves.
+O(N) where N is the length of the moves string.
+The algorithm iterates through the input string exactly once.
 
 Space Complexity:
-O(1). Only a constant number of variables (two counters) are used regardless of the input string's length.
+O(1).
+Only a constant number of variables are used to track the coordinates and loop, independent of input size.
 
 Optimization Notes:
-This solution is optimal. It processes each move exactly once and uses a constant amount of extra space, which are the best possible complexities for this problem.
+This solution is optimal. It requires processing each move at least once, leading to an unavoidable O(N) time complexity. It also uses minimal O(1) extra space, making it efficient in both time and space. No further significant algorithmic optimization is possible.
 
 ### 💻 Implementation
 ```py
