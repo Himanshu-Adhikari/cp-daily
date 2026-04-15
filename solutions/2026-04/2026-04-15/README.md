@@ -9,19 +9,19 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem requires replacing all single space characters in an input string with the "%20" sequence. This is a common string manipulation task.
+The task is to replace all spaces in a given string with '%20'. This problem often implies in-place modification of a character array in other programming languages.
 
 Approach:
-The solution uses Python's native string.replace() method. This method efficiently scans the string for target characters and constructs a new string with the specified substitutions.
+The solution leverages Python's built-in string.replace() method. This method creates a new string by replacing all occurrences of a specified substring (' ') with another substring ('%20').
 
 Time Complexity:
-O(N) where N is the length of the input string. Python's string.replace() method internally iterates through the string once to perform replacements.
+O(N) where N is the length of the input string. Python's string.replace effectively iterates through the string once to construct the new result.
 
 Space Complexity:
-O(N) where N is the length of the input string. A new string is created to hold the result, which can be up to three times the length of the original string.
+O(N) where N is the length of the input string. A new string is created to store the result, which can be up to three times the length of the original string.
 
 Optimization Notes:
-It is optimal for Python. Given that Python strings are immutable, creating a new string is necessary. The built-in replace method is highly optimized, making this the most efficient and Pythonic approach.
+This solution is optimal for Python's immutable strings and is highly Pythonic. However, if the problem constraints require in-place modification of a character array (common in this type of problem for languages like C/Java), then this solution is not space-optimal as it creates a new string. An in-place solution would typically use a two-pointer approach.
 
 ### 💻 Implementation
 ```py
@@ -36,19 +36,19 @@ class Solution:
 **Platform:** LeetCode
 
 Problem Insight:
-The problem asks for the minimum circular distance from a given starting index to any occurrence of a target string within an array.
+The problem asks for the minimum circular distance from a given start index to any occurrence of a target string in a circular array of words.
 
 Approach:
-The solution iterates through all words in the array. For each word that matches the target, it calculates a direct linear distance and attempts to calculate a wrap-around distance. It then updates the overall minimum distance found.
+The solution iterates linearly through the entire words array. For each word matching the target, it calculates two candidate distances: the direct absolute difference of indices and a specific expression (n - current index + start index) intended to cover a circular path. It keeps track of the minimum distance found.
 
-Time Complexity: O(N * L)
-Justification: The code iterates through N words. Each string comparison takes O(L) time, where L is the maximum length of a word.
+Time Complexity:
+O(N) - The solution performs a single pass over all N words in the array.
 
-Space Complexity: O(1)
-Justification: The solution uses a constant amount of extra space for variables, independent of the input size.
+Space Complexity:
+O(1) - It uses a constant amount of extra space for a few integer variables.
 
 Optimization Notes:
-The overall approach of scanning through the array is optimal in terms of worst-case time complexity. However, the calculation of the circular distance is incorrect in the line 'res=min(res,n-i+startIndex);'. The proper way to calculate the minimum circular distance between two indices 'a' and 'b' in an array of size 'N' is 'min(abs(a-b), N - abs(a-b))'. Correcting this calculation is necessary for the solution to be logically sound.
+The solution is not optimal in its correctness. The calculation of the circular distance `n - i + startIndex` is flawed and does not correctly represent the wrap-around distance in all cases. The correct circular distance between two indices i and startIndex should be min(abs(i - startIndex), n - abs(i - startIndex)). While a linear scan (O(N)) is generally required to find all occurrences, the current logic might return an incorrect minimum distance for some inputs due to this calculation error.
 
 ### 💻 Implementation
 ```cpp
