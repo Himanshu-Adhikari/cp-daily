@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem asks to calculate the number of derangements for a given integer n, representing permutations where no element stays in its original position. The solution implements the standard recursive formula for derangements.
+The problem calculates the number of derangements for a set of n distinct objects, where no object ends up in its original position.
 
 Approach:
-The core idea is to use the recursive relation D_n = (n-1)*(D_{n-1} + D_{n-2}) for derangements. Base cases for n=1 (D_1=0) and n=2 (D_2=1) are handled, and the formula is applied for larger values of n.
+The solution implements the standard recursive formula for derangement numbers D(n) = (n-1) * (D(n-1) + D(n-2)) with base cases D(1)=0 and D(2)=1.
 
 Time Complexity:
 O(2^n)
-The recursive structure recomputes overlapping subproblems exponentially, similar to a naive Fibonacci implementation.
+The recursive calls create an exponential number of subproblems, similar to the Fibonacci sequence without memoization.
 
 Space Complexity:
 O(n)
-This complexity arises from the maximum depth of the recursion call stack.
+The recursion depth can go up to n, requiring O(n) space for the call stack.
 
 Optimization Notes:
-The solution is not optimal due to its exponential time complexity from redundant calculations. It can be optimized to O(n) time using dynamic programming, either through memoization (storing computed subproblem results) or tabulation (iteratively computing values from base cases). With tabulation, space can be reduced to O(1) by only storing the two preceding values.
+This solution is not optimal. It recomputes the same subproblems multiple times, leading to exponential time complexity. It can be optimized to O(n) time complexity by using dynamic programming with memoization (top-down) or an iterative approach (bottom-up) to store and reuse previously computed derangement counts.
 
 ### 💻 Implementation
 ```cpp
@@ -44,18 +44,19 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-The problem asks to find the largest possible distance between two houses that have different colors. Houses are represented by an array of colors.
+The problem aims to find the maximum distance between two houses in a row that have different colors.
 
 Approach:
-The solution uses nested loops to check all possible pairs of houses (i, j) where i is to the left of j. For each pair, it verifies if their colors are distinct. If so, it updates the maximum distance found. The inner loop optimizes by breaking early once a different color is found for a fixed 'i' from the right.
+The solution uses a brute-force approach, iterating through all possible pairs of houses (i, j) where i < j. For each pair, it checks if their colors differ. If they do, it calculates the distance j - i and updates the overall maximum distance. The inner loop includes a break statement to find the largest j for a given i that maximizes j-i.
 
-Time Complexity: O(N^2)
-The nested loops iterate through approximately N*N pairs in the worst case, where N is the number of houses.
+Time Complexity:
+O(N^2) because the nested loops iterate through approximately N*N/2 pairs in the worst case.
 
-Space Complexity: O(1)
-The solution uses a constant amount of extra space for variables, independent of the input size.
+Space Complexity:
+O(1) because only a few constant extra variables are used for storage.
 
-Optimization Notes: The solution is not optimal. The problem can be solved in O(N) time by realizing that the maximum distance must always involve either the first house (index 0) or the last house (index N-1). We can find the furthest house with a different color from index 0 and the furthest house with a different color from index N-1, then take the maximum of these two distances.
+Optimization Notes:
+The solution is not optimal. An O(N) approach exists. The maximum distance must involve either the first house (index 0) or the last house (index n-1). The optimal solution can be found by taking the maximum of: (1) the distance from index 0 to the rightmost house with a different color, and (2) the distance from the leftmost house with a different color to index n-1. Both distances can be found by single linear scans.
 
 ### 💻 Implementation
 ```cpp
