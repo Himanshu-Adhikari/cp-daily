@@ -9,19 +9,19 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem counts buildings visible from the left, where a building is visible if its height is greater than or equal to the maximum height of all preceding buildings.
+Counts buildings visible from the left side. A building is visible if it is taller than or equal to any building to its left.
 
 Approach:
-The solution iterates through the buildings from left to right, keeping track of the maximum height encountered so far. If the current building's height is greater than or equal to this running maximum, it is counted as visible, and the maximum height is updated.
+The solution iterates through the buildings from left to right. It maintains a running maximum height encountered so far. If a building's height is greater than or equal to this maximum, it is considered visible and counted.
 
 Time Complexity:
-O(N) where N is the number of buildings. The algorithm performs a single pass through the input array, doing constant work for each element.
+O(N) where N is the number of buildings. The solution involves a single pass through the input array.
 
 Space Complexity:
-O(1) constant extra space. Only a few integer variables are used to store the count and the maximum height.
+O(1). The solution uses a constant number of extra variables regardless of input size.
 
 Optimization Notes:
-The solution is optimal. It processes each building exactly once with constant time operations, making it impossible to solve with a lower time complexity as all buildings must be inspected.
+The solution is optimal. It requires visiting each building at least once (O(N) time) and uses constant auxiliary space (O(1)), achieving the best possible complexity for this problem.
 
 ### 💻 Implementation
 ```cpp
@@ -43,21 +43,21 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-The goal is to find the maximum possible absolute final position by replacing each '_' with either 'L' or 'R'. This involves determining the two extreme possible final positions (most left and most right).
+The goal is to find the maximum possible absolute distance from the origin. Unknown moves ('_') can be chosen to maximize this distance.
 
 Approach:
-Iterate through the moves string, tracking counts of 'L', 'R', and '_'. Calculate two potential final positions: one where all '_' resolve to extend movement in the 'R' direction, and another where all '_' resolve to extend movement in the 'L' direction. The maximum absolute distance is found by taking the maximum of these two resulting positions (adjusted for direction).
+The solution calculates two extreme final positions: one by treating all '_' as 'L' (yielding a position P_min) and another by treating all '_' as 'R' (yielding a position P_max). The final answer is the maximum of the absolute values of these two positions. The code's variables 'l' and 'r' effectively compute -P_min and P_max respectively, and then take their maximum.
 
 Time Complexity:
 O(N)
-A single pass is made through the input string of length N.
+The solution iterates through the input string of length N exactly once.
 
 Space Complexity:
 O(1)
 Only a fixed number of integer variables are used regardless of input size.
 
 Optimization Notes:
-It is optimal. The solution processes the input string in a single pass and uses constant extra space, achieving the best possible asymptotic complexity.
+The solution is optimal. It processes each character of the input string exactly once, achieving O(N) time complexity, and uses a constant amount of extra memory, achieving O(1) space complexity. No further algorithmic improvements are possible.
 
 ### 💻 Implementation
 ```cpp
