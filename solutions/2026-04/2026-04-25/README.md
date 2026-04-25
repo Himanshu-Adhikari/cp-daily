@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem involves reducing a sequence of integers based on their signs and absolute values, where elements with opposite signs can "collide" and be removed or modified. This simulates a process like asteroid collision.
+The problem simulates a collision process where numbers with opposite signs interact, with the number having a larger absolute value surviving, or both being removed if absolute values are equal. This reduction continues until no more collisions occur.
 
 Approach:
-A stack is used to process the integers from left to right. If an incoming integer encounters an element on top of the stack with an opposite sign, they collide. The collision rules are: if absolute value of incoming is greater, the stack top is removed and incoming continues colliding; if less, incoming is removed; if equal, both are removed. If no collision, the integer is pushed.
+A stack is utilized to manage the numbers. Each incoming number is compared with the stack's top. If they have opposite signs, they collide. Based on their absolute values, one is removed, the other survives, or both are removed, and the process repeats with the new stack top if the incoming number survives. If signs are same or stack is empty, the number is pushed.
 
 Time Complexity:
 O(N)
-Each element is pushed onto the stack at most once and popped from the stack at most once.
+Each element from the input array is pushed onto the stack at most once and popped at most once.
 
 Space Complexity:
 O(N)
-In the worst case, all elements can be stored in the stack or the final result vector.
+In the worst-case scenario, all elements might remain on the stack, requiring linear space.
 
 Optimization Notes:
-The solution is optimal. It achieves linear time complexity because each element is processed in amortized constant time. Linear space complexity is also optimal as the result itself can contain up to N elements.
+Optimal. The solution processes each input element in amortized constant time, leading to a linear time complexity which is the minimum required to examine all inputs. The space complexity is also optimal as the stack might need to store all elements.
 
 ### 💻 Implementation
 ```cpp
@@ -74,20 +74,19 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-This solution aims to find the maximum possible minimum distance between k selected points on a square's perimeter. It converts 2D coordinates to 1D distances, sorts them, and uses binary search on the answer.
+This problem aims to find the maximum possible minimum distance D between k selected points on the perimeter of a square. Points are mapped to a 1D coordinate system for circular processing.
 
 Approach:
-Points are mapped to their 1D positions along the perimeter, then sorted. A binary search determines the maximum minimum distance (limit). The check function, for a given limit, greedily attempts to select k points, each at least 'limit' distance from the previous, but its wrap-around logic for intermediate points is incomplete, treating the array as mostly linear.
+The solution uses binary search on the answer D (the maximum minimum distance). The `check` function determines if a given D is feasible by trying each of the N points as a starting point, then greedily selecting k-1 subsequent points using binary search to maintain the minimum distance D, and finally verifying the circular wrap-around distance.
 
 Time Complexity:
-O(N log N + N * K * log N * log P) where N is the number of points, K is the count of points to select, and P is the perimeter length.
-Sorting takes O(N log N). Binary search performs log P iterations. Each check function call iterates N times, performing K bisect_left calls, resulting in O(N * K * log N).
+O(N * k * log N * log(Perimeter)) due to N starting points, k greedy steps with log N for bisect_left, and log(Perimeter) for binary search.
 
 Space Complexity:
-O(N) for storing the 1D distances.
+O(N) for storing the 1D coordinates of the points.
 
 Optimization Notes:
-The check function's time complexity is O(N * K * log N), which can be improved to O(N) by using a two-pointer approach on a conceptually doubled array to efficiently find the next point and handle circularity for all points, not just the final one. The binary search upper bound (hi) should be the total perimeter (4 * side) instead of just 'side' to correctly cover the full range of possible distances. The current check function is flawed as it does not correctly handle intermediate points that might wrap around the perimeter.
+The binary search upper bound (hi) should be side * 2 (half perimeter) for correctness, as the maximum possible distance can exceed 'side'. The `check` function's complexity is O(N * k * log N), which is too slow if k can be O(N); an optimal check function for this problem would be O(N) using a two-pointer technique on an extended array, leading to an overall O(N log(Perimeter)) solution.
 
 ### 💻 Implementation
 ```py
