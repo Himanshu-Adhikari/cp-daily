@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-Find the longest substring where the count of the most frequent character plus k replacements can cover the entire substring length. This means (window length - max frequency) <= k.
+The problem asks for the longest substring where, by changing at most k characters, all characters in that substring become identical. This is equivalent to finding the longest substring where `(substring_length - max_frequency_of_any_char_in_substring) <= k`.
 
 Approach:
-A sliding window expands to the right, maintaining character counts and the maximum frequency within the window. If the number of characters needing replacement (window length minus max frequency) exceeds k, the window shrinks from the left. The maximum valid window length is tracked.
+A sliding window approach is used with two pointers, `i` (right) and `j` (left), and a frequency array `a` for characters. The window expands by moving `i` and updating character frequencies and `cur` (the maximum frequency of any character encountered in the current window's history). If the window length `(i - j + 1)` minus `cur` exceeds `k`, the window is invalid, and it shrinks from the left by moving `j` until the condition is met. The maximum valid window length is recorded.
 
 Time Complexity:
-O(n)
-Both pointers (i and j) traverse the string at most once, and operations inside the loop are constant time.
+O(N)
+Both pointers `i` and `j` traverse the string at most once. Frequency array operations (increment/decrement) and `max` operations are O(1) due to the fixed alphabet size.
 
 Space Complexity:
 O(1)
-A fixed-size array (26 for uppercase English letters) is used to store character frequencies.
+A fixed-size array of 26 integers (`a`) is used to store character frequencies, independent of the input string length.
 
 Optimization Notes:
-The solution is optimal. It processes each character of the string a constant number of times, achieving linear time complexity. The space complexity is also optimal as it uses constant extra space.
+This solution is optimal. It achieves linear time complexity O(N) by processing each character at most twice (once by pointer `i` and once by pointer `j`) and uses constant extra space, which is the best possible for this problem.
 
 ### 💻 Implementation
 ```cpp
@@ -52,19 +52,21 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-The problem requires making all grid elements equal by adding or subtracting 'x'. This implies all elements must have the same remainder when divided by 'x', and the goal is to minimize total operations to a common target.
+All elements must have the same remainder modulo x for equalization to be possible. The minimum sum of absolute differences to a target value occurs when the target is the median of the elements.
 
 Approach:
-The solution first verifies that all grid elements have the same remainder modulo 'x'. If not, it returns -1. It then flattens the grid into a 1D list and sorts it. The target value for operations is intended to be the median of this sorted list. Finally, it attempts to calculate the total operations by summing the absolute differences divided by 'x' for all elements, though it iterates over the original grid for this sum.
+First, verify that all grid elements share the same remainder modulo x; otherwise, return -1. Flatten the grid into a 1D list, sort it, and then calculate the total operations by summing absolute differences divided by x for each element to the median (or one of the two medians if the count is even).
 
 Time Complexity:
-O(NM log(NM)). The dominant operation is sorting the flattened list, which contains NM elements.
+O(N*M log(N*M))
+Flattening the grid is O(N*M), followed by sorting the N*M elements which dominates the complexity.
 
 Space Complexity:
-O(NM). A new list 'l' is created to store all NM elements of the grid.
+O(N*M)
+A flattened list containing all N*M grid elements is created.
 
 Optimization Notes:
-The core idea of checking modulo consistency and using the median to minimize operations is optimal. However, the provided code contains a critical bug: the 'rec' function incorrectly iterates over the original 2D grid instead of the flattened 1D list 'l' when calculating the sum of operations, leading to incorrect results. Assuming this bug is fixed, further optimization for very large grids could involve using a linear-time median-finding algorithm (like Quickselect) to reduce the time complexity from O(NM log(NM)) to O(NM) by avoiding a full sort.
+This solution is largely optimal. The initial modulo check and final sum calculation are linear (O(N*M)). Finding the median typically requires sorting (O(N*M log(N*M))) or a selection algorithm like Quickselect (average O(N*M), worst-case higher or O(N*M) with more complex pivot selection). Given common constraints, sorting is often an acceptable and simpler approach.
 
 ### 💻 Implementation
 ```py
