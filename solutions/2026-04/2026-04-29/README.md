@@ -9,21 +9,19 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem asks for the minimum swaps to group all ones together in a contiguous block. This is equivalent to finding a window of size equal to the total number of ones that contains the maximum number of ones.
+The problem asks for the minimum swaps to group all 1s contiguously. This is equivalent to finding a contiguous subarray (window) of length equal to the total number of 1s that contains the maximum possible count of 1s.
 
 Approach:
-First, count the total number of ones (let this be 'o'). Then, use a sliding window of size 'o' to iterate through the array. For each window, count the number of ones within it. The minimum swaps required is 'o' minus the maximum number of ones found in any window.
+First, count the total number of 1s in the array. Then, use a fixed-size sliding window, with its size equal to the total 1s count, to iterate through the array. For each window, count the number of 1s it contains. The minimum swaps required is the total 1s minus the maximum 1s found in any such window.
 
 Time Complexity:
-O(N)
-The solution iterates through the array twice (once for sum, once for sliding window), both are linear operations.
+O(N) because the array is traversed once to sum the 1s and then once more using a sliding window, processing each element a constant number of times.
 
 Space Complexity:
-O(1)
-It uses a fixed number of variables regardless of the input array size.
+O(1) because the solution only uses a few constant extra variables regardless of the input array size.
 
 Optimization Notes:
-The solution is optimal. It processes each element of the array at most a constant number of times (once for counting ones, once for the sliding window), achieving a linear time complexity which is the best possible as every element must be examined.
+This solution is optimal as it achieves linear time complexity, which is the theoretical minimum to examine all elements, and uses constant additional space. The specific return value of -1 for arrays with no 1s should be confirmed against the problem statement.
 
 ### 💻 Implementation
 ```cpp
@@ -48,19 +46,21 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-The problem involves finding a maximum score by selecting segments in adjacent columns of a grid, where segment choices must satisfy an overlap constraint (one segment contains the other). The scoring function is non-trivial, involving current column scores and specific adjustments based on height differences with the previous column.
+This appears to be a dynamic programming problem on a grid, likely involving selecting segments from columns to maximize a score. The score calculation depends on segment lengths and relative positions between adjacent columns.
 
 Approach:
-A dynamic programming approach is used where dp[i][curr_h][prev_h] stores the maximum score considering columns up to 'i', with column 'i' having a segment of height 'curr_h' and column 'i-1' having 'prev_h'. Transitions handle two cases: curr_h <= prev_h (contained) or curr_h > prev_h (containing), with complex score adjustments. Prefix sum arrays are used for efficient segment sum calculation, and prefix/suffix maximum arrays optimize range queries within DP transitions from O(N) to O(1) after O(N) precomputation per column.
+The solution uses a 3D dynamic programming approach where dp[i][curr_h][prev_h] stores the maximum score up to column 'i', with column 'i' having segment height 'curr_h' and column 'i-1' having segment height 'prev_h'. Prefix sums for columns are precomputed. Transitions are optimized using prefix/suffix maximums on the previous DP layer.
 
 Time Complexity:
-O(N^3). There are N columns, and for each column, a nested loop iterates N possible 'curr_h' values and N possible 'prev_h' values. The auxiliary prev_max and prev_suffix_max tables are also recomputed in O(N^2) per column, resulting in N * (N^2 + N^2) operations.
+O(N^3)
+The solution iterates through N columns, and for each column, it calculates (N+1)*(N+1) DP states.
 
 Space Complexity:
-O(N^3). The main dp table is of size N * (N+1) * (N+1). Auxiliary tables like col_sum, prev_max, and prev_suffix_max are O(N^2), but dp dominates.
+O(N^3)
+The 3D dp array dp[N][N+1][N+1] dominates the space complexity.
 
 Optimization Notes:
-The time complexity of O(N^3) is likely optimal for this specific DP state definition given the problem constraints and complex transitions. However, the space complexity can be optimized from O(N^3) to O(N^2). This is achieved by realizing that dp[i] only depends on dp[i-1]. Instead of storing the full N layers of the dp table, only two layers (current and previous) are needed, along with the auxiliary O(N^2) prev_max and prev_suffix_max tables.
+The space complexity can be optimized from O(N^3) to O(N^2) by noticing that dp[i] only depends on dp[i-1]. Only two layers of the dp table (current and previous column) are needed at any time.
 
 ### 💻 Implementation
 ```py
