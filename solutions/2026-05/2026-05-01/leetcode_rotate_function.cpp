@@ -4,7 +4,7 @@ public:
         int n=nums.size();
         vector<int>sum(n,0);
         for(int i=0;i<n;i++){
-            sum[0]=i*nums[i];
+            sum[0]+=i*nums[i];
         }
         int j=n-1;
         int tot=accumulate(nums.begin(),nums.end(),0);
