@@ -9,19 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The goal is to sort an array of integers primarily by their set bit count in descending order. Numbers with more set bits should come before numbers with fewer.
+The problem requires sorting an array of integers based on their set bit count in descending order. The relative order of numbers with equal set bit counts is preserved by stable sorts.
 
 Approach:
-The solution uses Python's built-in sort method with a custom key. The key for each element is computed by negating its set bit count, effectively sorting in descending order of bit counts.
+The solution leverages Python's built-in list.sort method. It uses a custom key function that computes the negative of the set bit count for each number, effectively achieving a descending sort based on bit counts.
 
 Time Complexity:
-O(N log N * log M) where N is array length and M is max element value. Python's Timsort is O(N log N), and x.bit_count() takes O(log M) time.
+O(N log N)
+Sorting N elements using a comparison sort takes O(N log N) time, and bit_count() is O(1) for fixed-width integers.
 
 Space Complexity:
-O(N) where N is array length. Python's Timsort uses O(N) auxiliary space in the worst case.
+O(N)
+Python's Timsort (used by list.sort) requires O(N) auxiliary space in the worst case.
 
 Optimization Notes:
-This solution is optimal for comparison-based sorting of general integers, achieving O(N log N) sorting time. The use of the built-in bit_count() is efficient.
+This solution is optimal for comparison-based sorts, as O(N log N) is the theoretical lower bound. The bit_count() operation is highly optimized, often using hardware instructions. While non-comparison sorts like counting sort could theoretically sort by bit counts in O(N*k) time (where k is max bits), this approach is practical, concise, and typically performs very well.
 
 ### 💻 Implementation
 ```py
@@ -36,21 +38,21 @@ class Solution:
 **Platform:** LeetCode
 
 Problem Insight:
-A string 'goal' is a rotation of 's' if and only if 'goal' has the same length as 's' and 'goal' is a substring of 's' concatenated with itself. This trick leverages the cyclic nature of string rotations.
+A string s can be rotated to form goal if goal is a substring of s concatenated with itself, provided both strings have the same length.
 
 Approach:
-The solution first verifies that the lengths of the original string 's' and the 'goal' string are equal. If they are, it concatenates 's' with itself (s + s) and then checks if 'goal' is present as a substring within this newly created doubled string.
+The solution first ensures that the original strings s and goal have identical lengths. Then, it concatenates s with itself and checks if goal exists as a substring within this doubled string.
 
 Time Complexity:
 O(N)
-String concatenation s+s takes O(N) and Python's string substring check 'in' is highly optimized to run in O(N) time, where N is the length of the strings.
+String concatenation takes O(N), and substring search (e.g., KMP-like algorithm) takes O(N) on a string of length 2N with pattern of length N, where N is the length of original s.
 
 Space Complexity:
 O(N)
-A new string s+s of length 2N is created, requiring O(N) auxiliary space.
+Creating the doubled string s+s requires O(N) additional space, where N is the length of the original string s.
 
 Optimization Notes:
-This solution is optimal in terms of time complexity, as it is impossible to solve the problem in less than O(N) time (all characters must be examined). The O(N) space complexity is inherent to the chosen approach due to string immutability in Python and the creation of the doubled string.
+This solution is optimal in terms of time complexity as it requires reading both strings, and space complexity is also optimal for approaches that construct the doubled string.
 
 ### 💻 Implementation
 ```py
