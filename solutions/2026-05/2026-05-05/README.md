@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem asks for the sum of XORs of all unique pairs (arr[i], arr[j]) where i < j. It can be efficiently solved by considering the contribution of each bit position to the total sum.
+The problem asks to calculate the sum of XORs for all distinct pairs in an array. This can be efficiently solved by considering the contribution of each bit position independently to the total sum.
 
 Approach:
-For each bit position from 0 to 31, count how many numbers in the array have that bit set and how many have it unset. The product of these two counts determines how many pairs will have that specific bit set in their XOR sum. Multiply this product by the bit's value (2^bit_position) and accumulate the result for all bit positions.
+Iterate through each bit position from 0 to 31. For each bit, count how many numbers in the array have that bit set and how many have it unset. The contribution of this bit position to the total sum is (count_set_bits * count_unset_bits * 2^bit_position). Sum these contributions over all bit positions.
 
 Time Complexity:
-O(N * B)
-The outer loop runs B (number of bits, typically 32) times. The inner loop iterates N (array size) times for each bit.
+O(N)
+The outer loop runs 32 times (a constant number of times), and the inner loop iterates N times for each bit position. Thus, it's 32*N operations, which simplifies to O(N).
 
 Space Complexity:
 O(1)
-Only a few constant variables are used to store counts and the running sum, independent of array size.
+The solution uses a constant number of variables to store counts and the sum, regardless of the input array size.
 
 Optimization Notes:
-This solution is optimal in terms of time complexity as it processes each bit for each number. The use of pow(2,i) should be replaced with (1LL << i) to ensure integer arithmetic, prevent potential floating-point precision errors, and improve performance slightly.
+The solution is optimal as it processes each bit of each number essentially once, resulting in linear time complexity with respect to the array size N. A minor improvement could be replacing pow(2,i) with (1LL << i) to avoid floating point computations and potential precision issues, though for i < 32 it usually works fine.
 
 ### 💻 Implementation
 ```cpp
@@ -61,21 +61,21 @@ class Solution{
 **Platform:** LeetCode
 
 Problem Insight:
-To rotate a linked list right by k positions, effectively we need to move the last k nodes to the front. This can be simplified by forming a circle and then breaking it at the new tail.
+The core idea is to transform the linked list into a circular structure, then find the correct breaking point to achieve the right rotation, effectively re-establishing a linear list with a new head and tail.
 
 Approach:
-First, determine the list's length and normalize k to be within the list's bounds. Form a circular list by connecting the tail to the head. Then, traverse (length - k) steps from the original head to locate the new tail, and break the circle at that point.
+First, calculate the list's length and find its current tail. Then, normalize k by taking k modulo the list's length. If k is zero, return the original head. Make the list circular by connecting the original tail to the original head. Finally, traverse (length - k) steps from the original head to find the new tail, whose next node will be the new head, and break the circular connection there.
 
 Time Complexity:
-O(n)
-Two passes are made over the list: one to find its length, and another to find the split point.
+O(N)
+The solution performs two traversals of the list: one to find its length and original tail, and another to find the new head and new tail for the rotation.
 
 Space Complexity:
 O(1)
-Only a fixed number of pointer variables are used, independent of the list's size.
+The solution uses a fixed number of extra pointers regardless of the list size, resulting in constant additional space.
 
 Optimization Notes:
-This solution is optimal. It requires at least one full pass to determine the list's length and another pass to restructure it, making O(n) time complexity unavoidable. It also uses minimal O(1) extra space.
+This solution is optimal. It requires at least one full pass to determine the list's length and identify the tail for rotation, and it achieves this with minimal constant extra space.
 
 ### 💻 Implementation
 ```cpp
