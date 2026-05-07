@@ -9,19 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem asks to determine if a second tree is structurally and value-wise identical to any subtree within a first tree.
+To determine if one tree is a subtree of another, we must check for identity at every node in the larger tree. This involves recursively comparing structures from potential match points.
 
 Approach:
-The solution recursively traverses the first tree (root1) to find a node whose subtree is identical to the second tree (root2). A helper function 'rec' performs a direct structural and value comparison of two subtrees.
+The algorithm recursively traverses the larger tree (root1). At each node in root1, it checks if the subtree rooted at that node is identical to root2 using a helper function. If no match is found, it continues searching in root1's left and right subtrees.
 
 Time Complexity:
-O(N*M) where N is nodes in root1 and M is nodes in root2. In the worst case, every node in root1 triggers a full comparison with root2.
+O(N * M)
+In the worst case, for each of N nodes in root1, the helper function might compare up to M nodes of root2.
 
 Space Complexity:
-O(Height(root1) + Height(root2)) in the worst case. This is due to the recursion stack depth from traversing both trees.
+O(H1 + H2)
+The maximum depth of the recursion stack is the sum of the heights of root1 and root2 in the worst case.
 
 Optimization Notes:
-This approach is not optimal. It can be improved to O(N+M) using tree serialization to strings with null markers and then applying string searching algorithms like KMP, or by using tree hashing techniques.
+The solution is not optimal. It can be improved to O(N + M) time complexity. This can be achieved by serializing both trees into strings and then using string matching algorithms like KMP, or by employing tree hashing techniques. The current approach performs redundant subtree comparisons.
 
 ### 💻 Implementation
 ```cpp
@@ -44,21 +46,21 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-The problem calculates for each index i a specific value related to prefix maximums and suffix minimums. This value represents the highest prefix maximum of any 'valid split point' k >= i, where a split at k is valid if max(nums[0..k]) > min(nums[k+1..n-1]). If no such k >= i exists, the value is max(nums[0..i]).
+The problem defines each element res[i] based on a condition involving prefix maximums, suffix minimums, and the value of res[i+1]. The last element is a special base case.
 
 Approach:
-The solution precomputes prefix maximums (pm) and suffix minimums (sn). It then iterates backwards to populate the result array. For each index i, if pm[i] is greater than sn[i+1], it means a valid split exists, so res[i] inherits the value from res[i+1]. Otherwise, res[i] is set to pm[i].
+The solution precomputes prefix maximums and suffix minimums in two linear passes. It then initializes the last result element and iteratively computes the remaining results backward using the precomputed arrays and the conditional logic.
 
 Time Complexity:
-O(N)
-Prefix maximums, suffix minimums, and the final result array are each computed in a single linear pass.
+O(n)
+Justification: The solution involves three separate linear passes over the array of size n.
 
 Space Complexity:
-O(N)
-Three auxiliary arrays (pm, sn, res) are used, each storing N elements.
+O(n)
+Justification: Three auxiliary arrays (for prefix maximums, suffix minimums, and the result) each of size n are used.
 
 Optimization Notes:
-The solution is optimal in terms of time complexity, as it requires at least a linear scan to compute the necessary aggregates and the final result. The O(N) space complexity is also generally optimal for this approach, as the precomputed prefix maximums and suffix minimums arrays are needed for the backward pass of the result calculation.
+The solution is optimal in terms of both time and space complexity. Time is O(n) because all elements must be processed, and space is O(n) because precomputing prefix maximums and suffix minimums is necessary to achieve O(n) time complexity.
 
 ### 💻 Implementation
 ```py
