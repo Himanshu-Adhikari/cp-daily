@@ -7,7 +7,7 @@ Each day’s solutions are automatically analyzed and summarized into **concise,
 * Problem insight
 * Core approach
 * Time & space complexity
-* Optimization notes
+* Optimization note
 
 ---
 
