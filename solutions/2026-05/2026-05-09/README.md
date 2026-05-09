@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-This solution counts the number of spanning trees in a given graph. It applies Kirchhoff's Matrix Tree Theorem, a fundamental result in graph theory.
+The problem aims to count the total number of spanning trees in a given graph. This is a fundamental problem in graph theory.
 
 Approach:
-The core idea is to construct the Laplacian matrix of the graph. A cofactor is then obtained by removing any single row and column from the Laplacian matrix. The determinant of this cofactor yields the total count of spanning trees.
+The solution implements Kirchhoff's Matrix Tree Theorem. It constructs the graph's Laplacian matrix, then computes the determinant of any of its (N-1) x (N-1) principal minors, which yields the number of spanning trees.
 
 Time Complexity:
-O(n^3)
-Constructing the Laplacian matrix takes O(n^2 + E) time, and calculating the determinant of an (n-1)x(n-1) matrix dominates at O(n^3).
+O(N^3)
+Constructing the Laplacian matrix is O(N+M), but computing the determinant of an N x N matrix dominates with O(N^3) using standard methods like Gaussian elimination.
 
 Space Complexity:
-O(n^2)
-The solution requires O(n^2) space to store the n x n Laplacian matrix and its minor.
+O(N^2)
+The Laplacian matrix L of size N x N requires O(N^2) space to store its elements.
 
 Optimization Notes:
-The approach is generally optimal for counting spanning trees in arbitrary graphs using the Matrix Tree Theorem. For competitive programming, if the answer needs to be very large, floating point precision issues from numpy.linalg.det and rounding might arise, requiring specialized integer determinant calculation or modular arithmetic if a modulo is specified.
+This approach is optimal for dense graphs when using general determinant algorithms. For extremely large N, or if the graph is sparse, specialized determinant computation over integers (to avoid floating-point precision issues with numpy.linalg.det) or specific Matrix Tree Theorem implementations might be preferred.
 
 ### 💻 Implementation
 ```py
@@ -45,21 +45,21 @@ class Solution:
 **Platform:** LeetCode
 
 Problem Insight:
-The problem requires rotating elements within concentric layers of a 2D grid. Each layer is treated as a separate circular array that undergoes a left rotation.
+The problem requires rotating each concentric layer of a 2D grid independently by a given number of steps, k. Each layer's elements are rotated as if they form a 1D array.
 
 Approach:
-The solution iterates through concentric layers of the grid from outermost to innermost. For each layer, it extracts all elements into a temporary 1D vector. It then calculates the new position of each element after k rotations using modulo arithmetic and places them back into the grid along the same layer.
+The solution iterates through concentric layers of the grid, from the outermost to the innermost. For each layer, it extracts all elements into a temporary 1D vector, applies the k-step rotation to this 1D vector using modulo arithmetic, and then places the rotated elements back into their respective positions within the grid layer.
 
 Time Complexity:
 O(N*M)
-Each element in the grid is visited a constant number of times (once to extract, once to place back) across all layer iterations.
+Each element of the N x M grid is visited a constant number of times (extracted and placed back).
 
 Space Complexity:
 O(N+M)
-The auxiliary space is used by the 'res' vector, which stores elements of the current layer. In the worst case (outermost layer), its size is proportional to 2*(N+M).
+A temporary vector stores elements of one grid layer at a time, with the largest layer having O(N+M) elements.
 
 Optimization Notes:
-The solution is optimal in terms of time complexity because every element must be visited at least once. The space complexity is also optimal for this type of approach, as temporary storage for at least one layer's elements is generally needed to perform the rotation effectively.
+The solution is optimal in terms of time complexity as every element in the grid must be visited to be rotated. While it uses O(N+M) auxiliary space, which could theoretically be O(1) with complex in-place swaps, the current approach is practically optimal and simpler to implement without affecting the dominant time complexity.
 
 ### 💻 Implementation
 ```cpp
