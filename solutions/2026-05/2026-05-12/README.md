@@ -9,22 +9,22 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem requires supporting range LCM queries and point updates on an array of integers.
-A segment tree is suitable as LCM is an associative operation.
+This problem requires efficient range LCM queries and point updates on an array.
+A segment tree is well-suited to handle these operations effectively.
 
 Approach:
-A segment tree is constructed where each node stores the LCM of its range. Range LCM queries traverse the tree to combine relevant node values, and point updates propagate changes up the tree.
+A segment tree is used where each node stores the LCM of its corresponding range.
+Build involves computing LCMs bottom-up. Queries traverse the tree, combining LCMs of relevant segments.
+Updates modify a leaf and recompute LCMs up to the root.
 
 Time Complexity:
-O( (N + Q log N) * log(max_val) )
-Building the tree takes O(N) LCMs, and each query/update takes O(log N) LCMs; each LCM involves a GCD operation taking O(log(max_val)) time.
+O(N log(MAX_VAL) + Q log N log(MAX_VAL)). Building takes O(N log(MAX_VAL)); each query/update takes O(log N log(MAX_VAL)).
 
 Space Complexity:
-O(N)
-The segment tree uses an auxiliary array of size O(4N) to store node values.
+O(N). The segment tree uses an auxiliary array of size proportional to N.
 
 Optimization Notes:
-The solution is optimal for this problem type. Segment trees provide logarithmic time complexity for range queries and point updates, which is the best possible for general associative operations.
+Yes, it is optimal for range LCM queries with point updates. The logarithmic factors for segment tree operations and LCM computation are inherent.
 
 ### 💻 Implementation
 ```cpp
@@ -88,19 +88,20 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-This problem asks for the minimum initial effort required to complete a series of tasks, where each task has an actual cost and a minimum effort needed to start it. The key challenge is finding the optimal order to complete tasks and the minimum initial effort.
+This problem asks for the minimum starting energy to complete a series of tasks, where each task has an actual cost and a minimum energy required to start it. The order of tasks significantly impacts the total energy needed.
 
 Approach:
-The solution uses binary search on the possible range of the initial effort. For a given initial effort, a greedy approach determines if all tasks can be completed. Tasks are sorted by (actual_cost - minimum_required) in descending order (or equivalently, (minimum_required - actual_cost) in ascending order), with a tie-breaker by actual_cost ascending. This greedy order ensures that tasks with smaller 'buffer' (minimum_required - actual_cost) are attempted first.
+The solution first sorts the tasks using a greedy strategy: tasks with a larger difference between minimum required energy and actual cost (x[1] - x[0]) are prioritized. If differences are equal, tasks with larger actual cost (x[0]) come first. After sorting, binary search is performed on the possible range of the minimum starting effort. For each candidate effort, a helper function simulates task completion to check if it's sufficient for the sorted tasks.
 
 Time Complexity:
-O(N log N + N log R) where N is the number of tasks and R is the sum of maximum minimum requirements. Sorting takes O(N log N), and the binary search performs O(log R) calls to the O(N) verification function.
+O(N log N + N log(SUM_M)) where N is the number of tasks and SUM_M is the sum of all minimum requirements. Sorting takes O(N log N) and the binary search performs log(SUM_M) checks, each taking O(N).
 
 Space Complexity:
-O(N) for storing the tasks and the auxiliary space used by Python's Timsort algorithm.
+O(N)
+This is primarily due to the space required for storing the tasks and the sorting algorithm.
 
 Optimization Notes:
-The solution is optimal. It correctly employs a greedy sorting strategy for task order, which is provably optimal for minimizing the initial resource. Binary searching over the answer range for the minimum initial effort, coupled with this greedy check, is the standard and most efficient approach for this type of problem.
+The solution is not optimal in its time complexity. While the greedy sorting criterion is correct and takes O(N log N), the subsequent binary search on the answer space is unnecessary. After sorting, the minimum required starting effort can be found in a single O(N) pass by iterating through the sorted tasks and maintaining a running sum of actual costs and tracking the maximum needed energy. This would reduce the overall time complexity to O(N log N).
 
 ### 💻 Implementation
 ```py
