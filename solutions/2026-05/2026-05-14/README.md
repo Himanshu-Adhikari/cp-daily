@@ -9,21 +9,53 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem asks to find all starting indices where a given pattern vector 'b' appears as a sub-vector within a text vector 'a'. This is a classical pattern searching problem adapted for integer vectors.
+The problem is to find all occurrences of a given pattern (vector b) within a given text (vector a). This is a classic string matching problem.
 
 Approach:
-The solution implements the Knuth-Morris-Pratt (KMP) algorithm. It first precomputes a Longest Proper Prefix Suffix (LPS) array for the pattern vector 'b' to optimize shifts. Then, it uses this LPS array to efficiently match 'b' within 'a', avoiding re-comparison of characters that are known to match.
+The solution uses the Knuth-Morris-Pratt (KMP) algorithm. It first preprocesses the pattern to build a Longest Proper Prefix Suffix (LPS) array, which guides efficient pattern shifting upon mismatches. Then, it iterates through the text, comparing characters and utilizing the LPS array to avoid redundant comparisons and find all pattern occurrences.
 
 Time Complexity:
-O(n + m)
-The LPS array computation takes O(m) time, and the search phase takes O(n) time, where 'n' is the size of 'a' and 'm' is the size of 'b'.
+O(n + m) where n is the length of text a and m is the length of pattern b. Building the LPS array takes O(m) and searching the text takes O(n).
 
 Space Complexity:
-O(m + k)
-The 'lp' array uses O(m) space, and the 'res' vector stores 'k' occurrences, which can be up to O(n) in the worst case.
+O(n + m) where n is the length of text a and m is the length of pattern b. This accounts for the LPS array (O(m)) and the result vector which can store up to O(n) occurrences.
 
 Optimization Notes:
-The KMP algorithm is an optimal solution for this problem in terms of time complexity, achieving linear time (O(n+m)). No further asymptotic time complexity improvements are possible. The current implementation is efficient and standard for KMP.
+This solution implements the KMP algorithm, which is asymptotically optimal for string matching problems with a time complexity of O(N + M). No significant algorithmic improvements are possible for general cases.
+
+CODE:
+class Solution {
+  public:
+    vector<int> search(vector<int> &a, vector<int> &b) {
+        int m=b.size();
+        vector<int>lp(m,0);
+        int i=1,j=0;
+        int n=a.size();
+        while(i<m){
+            if(b[i]==b[j]){
+                lp[i++]=++j;
+            }
+            else{
+                if(j)j=lp[j-1];
+                else i++;
+            }
+        }
+        i=0,j=0;
+        vector<int>res;
+        while(i<n){
+            if(a[i]==b[j]){
+                i++,j++;
+                if(j==m){res.push_back(i-j);j=lp[j-1];}
+            }
+            else{
+                if(j)j=lp[j-1];
+                else i++;
+            }
+        }
+        return res;
+        
+    }
+};
 
 ### 💻 Implementation
 ```cpp
@@ -65,19 +97,21 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-The problem defines a "good" list as one where numbers 1 through N-1 appear once, and N appears twice, with N being len(nums)-1.
+A "good" array of length M must contain numbers 1 to (M-2) exactly once, and the number (M-1) exactly twice. The array should not contain any other numbers.
 
 Approach:
-The solution uses a frequency map to count occurrences of each number in the input list. It then verifies that numbers 1 to N-1 each have a count of 1, and N has a count of 2.
+The length of the input array is used to determine the expected largest number, N = length - 1. A frequency map (Counter) is used to count occurrences of all numbers in the input. The solution then checks if numbers from 1 to N-1 are present (at least once), and finally verifies if N appears exactly twice.
 
 Time Complexity:
-O(L) where L is the length of the input list. Building the frequency map takes O(L) time, and checking counts takes O(N) time (N is L-1).
+O(M), where M is the length of nums. Building the Counter takes O(M) time, and the subsequent loop runs up to N-1 times (where N=M-1), contributing O(M) to the total.
 
 Space Complexity:
-O(L) where L is the length of the input list. The frequency map (Counter) stores up to L distinct numbers.
+O(M), where M is the length of nums. The Counter stores frequency for at most M distinct elements found in the input array.
 
 Optimization Notes:
-This solution is optimal in terms of time complexity, as processing all elements is a lower bound. Its space complexity is also optimal for storing arbitrary number frequencies.
+The solution is not fully correct. While it uses an efficient O(M) time and O(M) space approach, the check `if(not a[i])` only verifies that numbers from 1 to `n-1` are present *at least once*, not *exactly once*. If any number in this range appears more than once, the current solution would incorrectly pass that check. A correct implementation needs to verify `if a[i] != 1` for `i` in `range(1, n)` to ensure exact counts.
+
+CODE:
 
 ### 💻 Implementation
 ```py
