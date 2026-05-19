@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-This problem maps to finding the shortest path in an unweighted graph where nodes are numbers 0-999 and edges are formed by multiplication modulo 1000.
+This problem asks for the minimum number of steps to transform a starting number to an ending number using specific modular arithmetic operations, indicating a shortest path problem on an unweighted graph.
 
 Approach:
-A Breadth-First Search (BFS) is employed to find the minimum number of steps. Starting from the 'start' number, BFS explores reachable numbers level by level until the 'end' number is found, guaranteeing the shortest path.
+The solution uses Breadth-First Search (BFS) to explore the state space. It treats numbers 0-999 as nodes in a graph, and operations (multiplying by an array element modulo 1000) as edges. BFS guarantees finding the shortest path in terms of number of steps.
 
 Time Complexity:
-O(1000 * N)
-There are 1000 possible states (0-999). For each state, the algorithm iterates through the 'N' factors in 'arr' to find neighbors.
+O(1000 * arr.size())
+There are 1000 possible states (0-999). In BFS, each state is visited at most once, and for each visited state, we iterate through 'arr.size()' possible transitions.
 
 Space Complexity:
 O(1000)
-The 'dist' array stores distances for 1000 states, and the queue can hold up to 1000 states in the worst case.
+The 'dist' vector stores distances for 1000 states, and the queue can hold up to 1000 states in the worst case.
 
 Optimization Notes:
-The solution is optimal. BFS is the standard algorithm for shortest paths in unweighted graphs, and the fixed state space (0-999) means each state and its transitions are processed efficiently.
+The solution is optimal for this problem. BFS correctly finds the minimum steps in an unweighted graph, and the early exit when the target 'end' is reached prevents unnecessary computation. The state space of 1000 nodes is small, making BFS highly efficient.
 
 ### 💻 Implementation
 ```cpp
@@ -67,21 +67,19 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-The problem asks to find the smallest common element in two non-decreasingly sorted arrays. This requires an efficient way to compare and advance through both lists.
+The task is to find the smallest common element between two given sorted arrays. The sorted property of the input arrays is key to an efficient solution.
 
 Approach:
-The solution uses a two-pointer approach, one for each array. Pointers advance the array with the smaller current element, effectively "discarding" elements that cannot be the smallest common element, until a match is found or one array is fully traversed.
+The solution employs a two-pointer technique. One pointer traverses each array, advancing the pointer corresponding to the smaller element until a common element is found or one array is fully traversed.
 
 Time Complexity:
-O(N + M)
-Each pointer traverses its respective array at most once, performing a constant number of operations per step.
+O(N + M) where N and M are the lengths of nums1 and nums2 respectively. Each element from both arrays is visited at most once in the worst case.
 
 Space Complexity:
-O(1)
-The solution uses only a few integer variables for pointers and array sizes, independent of input size.
+O(1). The solution uses a constant amount of extra space for a few integer variables.
 
 Optimization Notes:
-This solution is optimal. Since both arrays are sorted, the two-pointer approach examines each element at most once, achieving a linear time complexity proportional to the sum of array lengths, which is the theoretical minimum for this problem. No further improvements in time or space are generally possible for arbitrarily large inputs.
+The solution is optimal for this problem. A two-pointer approach on sorted arrays achieves linear time complexity, which is the most efficient possible as every element might need to be checked.
 
 ### 💻 Implementation
 ```cpp
