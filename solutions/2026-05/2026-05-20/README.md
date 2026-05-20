@@ -9,21 +9,21 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem asks to find if any two numbers in an array multiply to a given target. It correctly handles scenarios involving zero and duplicate elements.
+This is a variant of the two-sum problem, adapted for products instead of sums. It requires checking for a pair of numbers (x, y) such that x * y = target.
 
 Approach:
-The solution iterates through the input array, using a hash map to store numbers encountered so far. For each number, it checks if the required "complement" (target / current number) is already in the map, indicating a product pair. Special conditions for zero values are handled.
+Iterate through the array, using a hash map to store previously seen numbers. For each current number 'c', check if its "complement" (target / c, if c is non-zero and divides target) exists in the map. Handle zero values and target zero carefully.
 
 Time Complexity:
 O(N log N)
-Each element is processed once, and map operations (insertion, lookup) take O(log N) time in the worst case for a balanced tree map.
+The loop iterates N times, and map operations (insertion, lookup) take O(log K) time where K is map size (at most N).
 
 Space Complexity:
 O(N)
-The map stores up to N distinct elements from the input array.
+The map stores at most N distinct elements from the input array.
 
 Optimization Notes:
-The solution is not optimal for average-case performance. Using std::unordered_map instead of std::map would improve the average time complexity to O(N) due to average O(1) lookups and insertions for hash-based maps.
+No, it is not optimal. Using std::map results in O(N log N) time complexity. Replacing std::map with std::unordered_map would reduce the average time complexity to O(N), which is generally optimal as each element must be visited once.
 
 ### 💻 Implementation
 ```cpp
@@ -46,21 +46,21 @@ class Solution {
 **Platform:** LeetCode
 
 Problem Insight:
-The problem asks to find, for each prefix length i, the count of numbers that are present in both the prefix A[0...i] and B[0...i].
+The problem requires finding the count of common elements between prefixes of two arrays for each increasing prefix length. Elements are within a known range [1, N].
 
 Approach:
-The solution iterates through each prefix length i. For each prefix, it updates two boolean presence arrays (ca and cb) to mark numbers seen in A[0...i] and B[0...i] respectively. Then, it iterates through all possible numbers (1 to N) to count how many are marked in both ca and cb.
+The solution uses two frequency arrays to track elements present in the current prefixes of A and B. For each prefix length, it updates these frequency arrays and then iterates through all possible element values to count how many are present in both arrays' current prefixes.
 
 Time Complexity:
 O(N^2)
-The outer loop runs N times, and the inner loop to calculate the common count also runs N times in each iteration.
+The outer loop runs N times, and inside it, a nested loop iterates N times to calculate the common count.
 
 Space Complexity:
 O(N)
-The result vector (res) and two boolean presence arrays (ca, cb) each take O(N) space.
+Three vectors (res, ca, cb) of size N are used to store the results and frequency counts.
 
 Optimization Notes:
-The current solution is not optimal. It can be optimized to O(N). The inner loop that recomputes the entire common count for each prefix is redundant. An optimized approach would maintain the common count incrementally by only checking if A[i] or B[i] becoming present in their respective prefix leads to a new common element. This would involve constant time updates to the common count in each step of the main loop.
+The solution is not optimal. The common count can be updated in O(1) time at each step instead of O(N). By maintaining a running count and checking if newly added elements become common, the total time complexity can be reduced to O(N).
 
 ### 💻 Implementation
 ```cpp
