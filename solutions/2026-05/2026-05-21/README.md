@@ -9,19 +9,29 @@ Each solution includes the core idea, complexity analysis, and optimization insi
 **Platform:** GeeksforGeeks
 
 Problem Insight:
-The problem checks if all bits in the binary representation of a non-negative integer are set to '1'. This means the number must be of the form 2^k - 1 for some k >= 0.
+The problem aims to determine if all bits in the binary representation of a given non-negative integer are set to 1. This implies checking if the number is of the form 2^k - 1.
 
 Approach:
-The solution converts the integer to its binary string representation. It then iterates through this string (after removing the "0b" prefix). If it encounters any '0' character, it immediately returns False; otherwise, if all characters are '1', it returns True.
+The solution converts the integer to its binary string representation (excluding the "0b" prefix). It then iterates through each character of this binary string. If any character is '0', it immediately returns False; otherwise, if the loop completes, it returns True.
 
 Time Complexity:
-O(log n) because converting to binary string and iterating it takes time proportional to the number of bits in n, which is log n.
+O(log N)
+String conversion `bin(n)` takes O(log N) time and iterating through the string takes O(log N) time, where log N is the number of bits in N.
 
 Space Complexity:
-O(log n) because the binary string representation of n is stored, which has a length proportional to log n.
+O(log N)
+The binary string `s` stores the binary representation of N, requiring space proportional to the number of bits in N (log N).
 
 Optimization Notes:
-The solution is not optimal. It uses string conversion and iteration, which is generally slower than bitwise operations. A more efficient O(1) time and O(1) space solution using bit manipulation exists. A number N has all bits set if N is positive and (N AND (N + 1)) evaluates to 0.
+The current solution is not optimal. A bitwise approach can achieve O(1) time and O(1) space complexity. An integer n has all its bits set if and only if n is positive and n + 1 is a power of two. This can be checked by verifying if n > 0 and (n & (n + 1)) == 0.
+
+CODE:
+class Solution:
+    def isBitSet(self, n):
+        s=bin(n)[2::]
+        for i in s:
+            if(i=='0'):return False
+        return True
 
 ### 💻 Implementation
 ```py
@@ -37,19 +47,19 @@ class Solution:
 **Platform:** LeetCode
 
 Problem Insight:
-The core problem is to find the maximum length of a common prefix between the string representations of any number from two given arrays. A Trie (prefix tree) is well-suited for efficient prefix matching.
+The goal is to find the maximum length of a common digit prefix that exists between any number from arr1 and any number from arr2.
 
 Approach:
-First, a Trie is constructed by inserting the string representation of each number from arr1. Then, for each number in arr2, its string representation is traversed through the constructed Trie to find the longest prefix that exists in the Trie. The maximum length found across all numbers in arr2 is the final result.
+Build a Trie (prefix tree) by inserting all numbers from arr1, digit by digit. Then, for each number in arr2, traverse the constructed Trie to find the longest matching prefix, updating the overall maximum length found.
 
 Time Complexity:
-O((N + M) * L) where N is arr1.size(), M is arr2.size(), and L is the maximum number of digits in any integer. This is because each number (N from arr1, M from arr2) is converted to string and its digits are processed (inserted or searched) in the Trie, taking O(L) time per number.
+O(S1 + S2), where S1 is the total count of digits in all numbers in arr1 and S2 is the total count of digits in all numbers in arr2. This is because each digit from both arrays is processed at most once.
 
 Space Complexity:
-O(N * L) because in the worst case, the Trie stores approximately N * L nodes, representing all digits of all numbers in arr1. Each node uses a map for children pointers, which adds a constant factor.
+O(S1), where S1 is the total count of digits in all numbers in arr1. The Trie stores nodes corresponding to all distinct prefixes of numbers from arr1.
 
 Optimization Notes:
-The solution is optimal for this problem. Using a Trie is the standard and most efficient approach for prefix matching on string data. The constant factor for converting integers to strings and using a map for Trie children could be slightly reduced with character arrays or direct modulo/division for digits and fixed-size arrays for children, but the asymptotic complexity remains the same.
+This solution is optimal as it requires processing all digits of numbers in both arrays at least once. A minor constant factor optimization could be achieved by using a fixed-size array (e.g., node* children[10]) instead of std::map for child pointers in the Trie nodes, given the small and fixed alphabet size (digits 0-9).
 
 ### 💻 Implementation
 ```cpp
